@@ -4,10 +4,10 @@ import { collections } from "@hypermode/functions-as";
 import { JSON } from "json-as";
 import { getProduct } from "./crud";
 import {
-  searchResult,
+  productSearchResult,
   llmObject,
   llmSearchResult,
-  searchObject,
+  productSearchObject,
   consts,
 } from "./types";
 
@@ -41,15 +41,15 @@ export function searchProducts(
   query: string,
   maxItems: i32,
   thresholdStars: f32 = 0.0,
-): searchResult {
-  const searchRes = new searchResult(
+): productSearchResult {
+  const productSearchRes = new productSearchResult(
     consts.productNameCollection,
     consts.searchMethod,
     "success",
     "",
   );
 
-  const nameRes = collections.search(
+  const semanticSearchRes = collections.search(
     consts.productNameCollection,
     consts.searchMethod,
     query,
@@ -57,15 +57,15 @@ export function searchProducts(
     true,
   );
 
-  if (!nameRes.isSuccessful) {
-    searchRes.status = nameRes.status;
-    searchRes.error = nameRes.error;
+  if (!semanticSearchRes.isSuccessful) {
+    productSearchRes.status = semanticSearchRes.status;
+    productSearchRes.error = semanticSearchRes.error;
 
-    return searchRes;
+    return productSearchRes;
   }
 
   const rankedResults = reRankAndFilterSearchResultObjects(
-    nameRes.objects,
+    semanticSearchRes.objects,
     thresholdStars,
   );
 
@@ -75,14 +75,18 @@ export function searchProducts(
       rankedResults[i].score,
       rankedResults[i].distance,
     );
-    searchRes.searchObjs.unshift(searchObj);
+    productSearchRes.searchObjs.unshift(searchObj);
   }
 
-  return searchRes;
+  return productSearchRes;
 }
 
-function getSearchObject(key: string, score: f64, distance: f64): searchObject {
-  return new searchObject(getProduct(key), score, distance);
+function getSearchObject(
+  key: string,
+  score: f64,
+  distance: f64,
+): productSearchObject {
+  return new productSearchObject(getProduct(key), score, distance);
 }
 
 function reRankAndFilterSearchResultObjects(

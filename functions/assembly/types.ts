@@ -45,7 +45,7 @@ export class llmObject {
 
 
 @json
-export class searchObject {
+export class productSearchObject {
   product: product;
   score: f64;
   distance: f64;
@@ -59,19 +59,19 @@ export class searchObject {
 
 
 @json
-export class searchResult {
+export class productSearchResult {
   collection: string;
   searchMethod: string;
   status: string;
   error: string;
-  searchObjs: searchObject[];
+  searchObjs: productSearchObject[];
 
   constructor(
     collection: string,
     searchMethod: string,
     status: string,
     error: string,
-    searchObjs: searchObject[] = [],
+    searchObjs: productSearchObject[] = [],
   ) {
     this.collection = collection;
     this.searchMethod = searchMethod;
@@ -85,9 +85,9 @@ export class searchResult {
 @json
 export class llmSearchResult {
   llmObj: llmObject;
-  searchRes: searchResult;
+  searchRes: productSearchResult;
 
-  constructor(llmObj: llmObject, searchRes: searchResult) {
+  constructor(llmObj: llmObject, searchRes: productSearchResult) {
     this.llmObj = llmObj;
     this.searchRes = searchRes;
   }
