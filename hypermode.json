@@ -1,17 +1,53 @@
 {
   "$schema": "https://manifest.hypermode.com/hypermode.json",
   "models": {
-    // Models used by your Hypermode project are defined here.
-    // As an example, the particular model below is a sentiment classifier from Hugging Face,
-    // which is hosted on Hypermode and used in the starter function in this repository.
-    // You can update or remove this model as needed.
-    "sentiment-classifier": {
-      "sourceModel": "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+    "minilm": {
+      "sourceModel": "sentence-transformers/all-MiniLM-L6-v2",
       "provider": "hugging-face",
       "host": "hypermode"
+    },
+    "text-generator": {
+      "sourceModel": "gpt-4o-mini",
+      "host": "openai",
+      "path": "v1/chat/completions"
     }
   },
   "hosts": {
-    // If you use any external hosts in your project, specify them here.
+    "openai": {
+      "baseUrl": "https://api.openai.com/",
+      "headers": {
+        "Authorization": "Bearer {{API_KEY}}"
+      }
+    }
+  },
+  "collections": {
+    "productNames": {
+      "searchMethods": {
+        "searchMethod1": {
+          "embedder": "miniLMEmbed",
+          "index": {
+            "type": "sequential"
+          }
+        }
+      }
+    },
+    "productDescriptions": {
+      "searchMethods": {}
+    },
+    "productCategories": {
+      "searchMethods": {}
+    },
+    "productPrices": {
+      "searchMethods": {}
+    },
+    "productImages": {
+      "searchMethods": {}
+    },
+    "productStars": {
+      "searchMethods": {}
+    },
+    "isProductStocked": {
+      "searchMethods": {}
+    }
   }
 }
