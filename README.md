@@ -16,7 +16,7 @@ To try it out, add sample data to your collection using the `upsertProducts` api
 
 ## How to use the template
 
-- To deploy this code, click "use the template" in this repo. 
+- To deploy this code, click "use this template" in this repo. 
 - Go to [hypermode.com/sign-up](https://hypermode.com/sign-up).
 - Create new project
 - Import this repo
