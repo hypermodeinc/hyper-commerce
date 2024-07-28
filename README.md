@@ -4,11 +4,12 @@ Composable-commerce storefront demo to show off the performance of Hypermode's v
 
 Example site: [hypermode-commerce.com](https://hypermode-commerce.com)
 
-When a user pauses in the search bar, Hypermode generates an embedding of the user's input, then executes a vector search (HNSW or sequential) and renders in the UI... all in less than 200ms. 
+When a user pauses in the search bar, Hypermode generates an embedding of the user's input and executes a vector search (HNSW or sequential) of a 10,000 item catalog in less than 200ms. 
 
 ## Lightning Fast Semantic Search
 
-This template illustrates the power of Hypermode collections to create production-grade semantic search, capable of results in sub 200ms.
+This template illustrates the power of Hypermode collections to create real-time production-grade semantic search.
+
 This is accomplished by hosting small embedding models, and building vector indexes in memory, allowing for low latency results.
 
 To try it out, add sample data to your collection using the `upsertProducts` api, which embeds & inserts texts into your index, and query the index using `searchProducts`.
