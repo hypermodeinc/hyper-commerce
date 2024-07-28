@@ -5,21 +5,9 @@
       "sourceModel": "sentence-transformers/all-MiniLM-L6-v2",
       "provider": "hugging-face",
       "host": "hypermode"
-    },
-    "text-generator": {
-      "sourceModel": "gpt-4o-mini",
-      "host": "openai",
-      "path": "v1/chat/completions"
     }
   },
-  "hosts": {
-    "openai": {
-      "baseUrl": "https://api.openai.com/",
-      "headers": {
-        "Authorization": "Bearer {{API_KEY}}"
-      }
-    }
-  },
+  "hosts": {},
   "collections": {
     "productNames": {
       "searchMethods": {

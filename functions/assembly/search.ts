@@ -1,41 +1,8 @@
 import { models } from "@hypermode/functions-as";
 import { EmbeddingsModel } from "@hypermode/models-as/models/experimental/embeddings";
 import { collections } from "@hypermode/functions-as";
-import { JSON } from "json-as";
 import { getProduct } from "./crud";
-import {
-  productSearchResult,
-  llmObject,
-  llmSearchResult,
-  productSearchObject,
-  consts,
-} from "./types";
-
-import {
-  OpenAIChatModel,
-  ResponseFormat,
-  SystemMessage,
-  UserMessage,
-} from "@hypermode/models-as/models/openai/chat";
-
-export function searchProductWithLLM(
-  query: string,
-  maxItems: i32,
-  thresholdStars: f32 = 0.0,
-): llmSearchResult {
-  // this function uses llms to generate a list of good items to search for
-  // think of it like a google search for e-commerce
-
-  const llmObj = generateSearchObjectFromLLM(query);
-
-  const searchRes = searchProducts(
-    llmObj.searchQuery,
-    maxItems,
-    thresholdStars,
-  );
-
-  return new llmSearchResult(llmObj, searchRes);
-}
+import { productSearchResult, productSearchObject, consts } from "./types";
 
 export function searchProducts(
   query: string,
@@ -135,32 +102,6 @@ function reRankAndFilterSearchResultObjects(
   }
 
   return filteredResults;
-}
-
-export function generateSearchObjectFromLLM(text: string): llmObject {
-  const instruction = `You are an e-commerce assistant. A user will provide you with something they're trying to look for.
-  Only respond with valid JSON object containing two objects named "userResponse" and "searchQuery". It must be in this format:
-  {"userResponse":"I see you're looking for a new pair of women's shoes! We have a couple options for that, I'll generate a list of good items for you.","searchQuery":"women's shoes, women's sneakers, boots, heels, sandals"}.
-  For user response, within 2 sentences, give them a response of what could be good items to match what they could be looking for. 
-  They must all be e-commerce related. Be cordial and helpful.
-  For search query, provide a string of comma separated of items that could be good to semantic search for. They must all be e-commerce related.`;
-
-  const model = models.getModel<OpenAIChatModel>(consts.generationModel);
-  const input = model.createInput([
-    new SystemMessage(instruction),
-    new UserMessage(text),
-  ]);
-
-  input.responseFormat = ResponseFormat.Json;
-
-  const output = model.invoke(input);
-
-  // The output should contain the JSON string we asked for.
-  const json = output.choices[0].message.content.trim();
-
-  const results = JSON.parse<Map<string, string>>(json);
-
-  return new llmObject(results.get("userResponse"), results.get("searchQuery"));
 }
 
 export function miniLMEmbed(texts: string[]): f32[][] {

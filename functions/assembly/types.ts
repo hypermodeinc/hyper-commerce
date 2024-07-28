@@ -33,18 +33,6 @@ export class product {
 
 
 @json
-export class llmObject {
-  userResponse: string;
-  searchQuery: string;
-
-  constructor(userResponse: string, searchQuery: string) {
-    this.userResponse = userResponse;
-    this.searchQuery = searchQuery;
-  }
-}
-
-
-@json
 export class productSearchObject {
   product: product;
   score: f64;
@@ -83,18 +71,6 @@ export class productSearchResult {
 
 
 @json
-export class llmSearchResult {
-  llmObj: llmObject;
-  searchRes: productSearchResult;
-
-  constructor(llmObj: llmObject, searchRes: productSearchResult) {
-    this.llmObj = llmObj;
-    this.searchRes = searchRes;
-  }
-}
-
-
-@json
 export class consts {
   static readonly productNameCollection: string = "productNames";
   static readonly productDescriptionCollection: string = "productDescriptions";
@@ -106,5 +82,4 @@ export class consts {
 
   static readonly searchMethod: string = "searchMethod1";
   static readonly embeddingModel: string = "minilm";
-  static readonly generationModel: string = "text-generator";
 }
