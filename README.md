@@ -1,8 +1,10 @@
-# Hyper Commerce
+# Hyper-Commerce
 
-This is a template for new Hypermode projects to create an ecommerce website.
+Composable-commerce storefront demo to show off the performance of Hypermode's vector search. 
 
-See other templates at [justship.ai](https://justship.ai/)
+Example site: hypermode-commerce.com
+
+When a user pauses in the search bar, Hypermode generates an embedding of the user's input, then executes a vector search (HNSW or sequential) and renders in the UI... all in less than 200ms. 
 
 ## Lightning Fast Semantic Search
 
@@ -13,7 +15,14 @@ To try it out, add sample data to your collection using the `upsertProducts` api
 
 ## How to use the template
 
-To deploy this code, navigate to [hypermode.com/go](https://hypermode.com/go) and select this template to deploy. That will automatically spin up the embedding model found in the `hypermode.json` file.
+- To deploy this code, click "use the template" in this repo. 
+- Go to [hypermode.com/sign-up](https://hypermode.com/sign-up).
+- Create new project
+- Import this repo
+
+Hypermode will automatically spin up the embedding model found in the `hypermode.json` file as well as generate a working GraphQL API for all functions found in your `index.ts` file. 
+
+_coming soon_: deployable template of frontend
 
 ### Sample data
 
