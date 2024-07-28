@@ -1,10 +1,10 @@
 # Hyper-Commerce
 
-Composable-commerce storefront demo to show off the performance of Hypermode's vector search. 
+Composable-commerce storefront demo to show off the performance of Hypermode's vector search.
 
 Example site: [hypermode-commerce.com](https://hypermode-commerce.com)
 
-When a user pauses in the search bar, Hypermode generates an embedding of the user's input and executes a vector search (HNSW or sequential) of a 10,000 item catalog in less than 200ms. 
+When a user pauses in the search bar, Hypermode generates an embedding of the user's input and executes a vector search (HNSW or sequential) of a 10,000 item catalog in less than 200ms.
 
 ## Lightning Fast Semantic Search
 
@@ -16,12 +16,12 @@ To try it out, add sample data to your collection using the `upsertProducts` api
 
 ## How to use the template
 
-- To deploy this code, click "use this template" in this repo. 
+- To deploy this code, click "use the template" in this repo.
 - Go to [hypermode.com/sign-up](https://hypermode.com/sign-up).
 - Create new project
 - Import this repo
 
-Hypermode will automatically spin up the embedding model found in the `hypermode.json` file as well as generate a working GraphQL API for all functions found in your `index.ts` file. 
+Hypermode will automatically spin up the embedding model found in the `hypermode.json` file as well as generate a working GraphQL API for all functions exported from your `index.ts` file.
 
 _coming soon_: deployable template of frontend
 
