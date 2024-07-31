@@ -21,13 +21,13 @@ To try it out, add sample data to your collection using the `upsertProducts` api
 - Create new project
 - Import this repo
 
-Hypermode will automatically spin up the embedding model found in the `hypermode.json` file as well as generate a working GraphQL API for all functions exported from your `index.ts` file.
-
-_coming soon_: deployable template of frontend
+Hypermode will automatically spin up the embedding model found in `backend/hypermode.json` file as well as generate a working GraphQL API for all functions exported from your `backend/functions/index.ts` file.
 
 ### Sample data
 
-An example is provided, named `hyper_toys.csv`, and the corresponding python script to run it is named `ecommerce_populate.py`, both found at the root directory. Load the data using `python3 ecommerce_populate.py`, and it will show you the batched inserts and time taken.
+An example is provided, named `backend/extras/hyper_toys.csv`, and the corresponding python script to run it is named `backend/extras/ecommerce_populate.py`. Navigate to the subfolder to run them.
+To install dependencies, run `pip install -r requirements.txt` from within that directory.
+Load the data using `python3 ecommerce_populate.py`, and it will show you the batched inserts and time taken.
 Please note: since this is inserting 10k rows sequentially, it will take ~18 minutes to embed & insert data. If you want to just try this out with a smaller dataset, feel free to shrink the csv to whatever you need.
 
 ### Calling the APIs
@@ -44,3 +44,29 @@ Each function can use AI models inferences, data connections (HTTP, GraphQL, DB,
 For more information on functions, models, connections, collections and project configuration, consult [our documentation](https://docs.hypermode.com).
 
 For writing functions in AssemblyScript, you can refer to the [examples](https://github.com/hypermodeAI/functions-as/tree/main/examples) in [hypermodeAI/functions-as](https://github.com/hypermodeAI/functions-as).
+
+## Frontend Template
+
+### Running Locally
+
+To run this project locally, start by setting up your environment variables. Copy the definitions from [`.env.example`](https://github.com/hypermodeAI/hyper-commerce/blob/main/frontend/.env.example) into a new file named `.env.local` at the root of your project, and provide the values from your Hypermode dashboard.
+
+Once your environment variables are configured, install the necessary dependencies with:
+
+```
+pnpm install
+```
+
+Then, start the development server using:
+
+```
+pnpm dev
+```
+
+Your app should be up and running at [localhost:3000](http://localhost:3000/)
+
+### Deploy with Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/hypermodeAI/hyper-commerce)
+
+_NOTES_: Make sure your environment variables are added to your Vercel project.
