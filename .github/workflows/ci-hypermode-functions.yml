@@ -23,13 +23,20 @@ jobs:
       - name: Locate directory with hypermode.json
         id: set-dir
         run: |
-          HYPERMODE_DIR=$(find $(pwd) -name 'hypermode.json' -print0 | xargs -0 -n1 dirname)
-          echo "HYPERMODE_DIR=$HYPERMODE_DIR" >> $GITHUB_ENV
-          cd $HYPERMODE_DIR/functions
+          HYPERMODE_JSON=$(find $(pwd) -name 'hypermode.json' -print0 | xargs -0 -n1 echo)
+          if [ -n "$HYPERMODE_JSON" ]; then
+            HYPERMODE_DIR=$(dirname "$HYPERMODE_JSON")
+            echo "HYPERMODE_DIR=$HYPERMODE_DIR" >> $GITHUB_ENV
+          else
+            echo "hypermode.json not found"
+            exit 1
+          fi
       - name: Install dependencies
         run: npm install
+        working-directory: ${{ env.HYPERMODE_DIR }}/functions
       - name: Build the project
         run: npm run build release
+        working-directory: ${{ env.HYPERMODE_DIR }}/functions
       - name: Publish GitHub artifact
         uses: actions/upload-artifact@v4
         with:
