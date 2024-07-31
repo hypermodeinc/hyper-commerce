@@ -183,6 +183,17 @@ export function deleteProduct(id: string): string {
   return "success";
 }
 
+export function deleteProducts(ids: string[]): string {
+  for (let i = 0; i < ids.length; i++) {
+    const res = deleteProduct(ids[i]);
+    if (res !== "success") {
+      return "Error deleting product with id: " + ids[i];
+    }
+  }
+
+  return "success";
+}
+
 export function getProduct(id: string): product {
   const name = collections.getText(consts.productNameCollection, id);
   const category = collections.getText(consts.productCategoryCollection, id);
@@ -211,4 +222,12 @@ export function getProduct(id: string): product {
     f32(stars),
     isStocked,
   );
+}
+
+export function getProducts(ids: string[]): product[] {
+  const products: product[] = [];
+  for (let i = 0; i < ids.length; i++) {
+    products.push(getProduct(ids[i]));
+  }
+  return products;
 }
