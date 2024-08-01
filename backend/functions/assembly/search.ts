@@ -2,14 +2,14 @@ import { models } from "@hypermode/functions-as";
 import { EmbeddingsModel } from "@hypermode/models-as/models/experimental/embeddings";
 import { collections } from "@hypermode/functions-as";
 import { getProduct } from "./crud";
-import { productSearchResult, productSearchObject, consts } from "./types";
+import { ProductSearchResult, ProductSearchObject, consts } from "./types";
 
 export function searchProducts(
   query: string,
   maxItems: i32,
   thresholdStars: f32 = 0.0,
-): productSearchResult {
-  const productSearchRes = new productSearchResult(
+): ProductSearchResult {
+  const productSearchRes = new ProductSearchResult(
     consts.productNameCollection,
     consts.searchMethod,
     "success",
@@ -52,8 +52,8 @@ function getSearchObject(
   key: string,
   score: f64,
   distance: f64,
-): productSearchObject {
-  return new productSearchObject(getProduct(key), score, distance);
+): ProductSearchObject {
+  return new ProductSearchObject(getProduct(key), score, distance);
 }
 
 function reRankAndFilterSearchResultObjects(

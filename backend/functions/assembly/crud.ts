@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { product, consts } from "./types";
+import { Product, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -194,7 +194,7 @@ export function deleteProducts(ids: string[]): string {
   return "success";
 }
 
-export function getProduct(id: string): product {
+export function getProduct(id: string): Product {
   const name = collections.getText(consts.productNameCollection, id);
   const category = collections.getText(consts.productCategoryCollection, id);
   const priceRes = collections.getText(consts.productPriceCollection, id);
@@ -212,7 +212,7 @@ export function getProduct(id: string): product {
   );
   const isStocked = isStockedRes === "true";
 
-  return new product(
+  return new Product(
     id,
     name,
     category,
@@ -224,8 +224,8 @@ export function getProduct(id: string): product {
   );
 }
 
-export function getProducts(ids: string[]): product[] {
-  const products: product[] = [];
+export function getProducts(ids: string[]): Product[] {
+  const products: Product[] = [];
   for (let i = 0; i < ids.length; i++) {
     products.push(getProduct(ids[i]));
   }
