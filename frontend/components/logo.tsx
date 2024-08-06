@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="https://github.com/hypermodeAI/hyper-commerce?tab=readme-ov-file#hyper-commerce">
+    <Link href="https://github.com/hypermodeAI/hyper-commerce?tab=readme-ov-file#hyper-commerce"target="_blank">
       <div className="text-white flex items-center font-semibold text-xl italic">
         <svg
           xmlns="http://www.w3.org/2000/svg"
