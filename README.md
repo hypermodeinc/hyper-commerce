@@ -73,6 +73,6 @@ Your app should be up and running at [localhost:3000](http://localhost:3000/)
 
 ### Deploy with Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/hypermodeAI/hyper-commerce/frontend)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FhypermodeAI%2Fhyper-commerce%2Ftree%2Fmain%2Ffrontend)
 
 _NOTES_: Make sure your environment variables are added to your Vercel project.
