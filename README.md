@@ -27,6 +27,12 @@ Hypermode will automatically spin up the embedding model found in `backend/hyper
 
 An example is provided, named `backend/extras/hyper_toys.csv`, and the corresponding python script to run it is named `backend/extras/ecommerce_populate.py`. Navigate to the subfolder to run them.
 To install dependencies, run `pip install -r requirements.txt` from within that directory.
+
+You'll need to edit the `ecommerce_populate.py` file with your Hypermode project URL and auth token found in your Hypermode console dashboard. 
+
+
+[![hyper-cons](https://github.com/user-attachments/assets/18478278-93bf-479b-955c-c23c7a7cdecb)](hypermode.com)
+
 Load the data using `python3 ecommerce_populate.py`, and it will show you the batched inserts and time taken.
 Please note: since this is inserting 10k rows sequentially, it will take ~18 minutes to embed & insert data. If you want to just try this out with a smaller dataset, feel free to shrink the csv to whatever you need.
 
