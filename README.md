@@ -2,7 +2,13 @@
 
 Composable-commerce storefront demo to show off the performance of Hypermode's vector search.
 
-Example site: [hypermode-commerce.com](https://hypermode-commerce.com)
+Example site: 
+
+[hypermode-commerce.com](https://hypermode-commerce.com)
+
+Explainer Video:
+
+[![Hypermode Demo](https://img.youtube.com/vi/Me4YjNzR-cg/0.jpg)](https://www.youtube.com/watch?v=Me4YjNzR-cg)
 
 When a user pauses in the search bar, Hypermode generates an embedding of the user's input and executes a vector search (HNSW or sequential) of a 10,000 item catalog in less than 200ms.
 
