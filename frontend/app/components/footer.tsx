@@ -24,7 +24,7 @@ export default function Footer() {
             <a
               href="https://youtu.be/Me4YjNzR-cg"
               target="_blank"
-              className="bg-red-600 hover:bg-red-500 text-white text-sm py-2 px-4 rounded inline-flex items-center"
+              className="border hover:opacity-90 text-white text-sm py-2 px-4 rounded inline-flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -33,7 +33,7 @@ export default function Footer() {
               >
                 <path d="M23.498 6.186a2.997 2.997 0 00-2.112-2.116C19.281 3.571 12 3.571 12 3.571s-7.281 0-9.386.499A2.997 2.997 0 00.502 6.186C0 8.291 0 12 0 12s0 3.709.502 5.814a2.997 2.997 0 002.112 2.116c2.105.499 9.386.499 9.386.499s7.281 0 9.386-.499a2.997 2.997 0 002.112-2.116C24 15.709 24 12 24 12s0-3.709-.502-5.814zM9.602 15.207V8.793L15.795 12 9.602 15.207z" />
               </svg>
-              <span>Learn how it's made</span>
+              <span>Learn how it&apos;s made</span>
             </a>
           </div>
         </div>
