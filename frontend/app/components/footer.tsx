@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <div>
-      <footer className="border-t border-gray-700 py-4">
+      <footer className="border-t border-white/40 pt-8">
         <div className="font-bold container mx-auto flex justify-between items-center">
           <div>
             <p>Hypermode Commerce</p>
