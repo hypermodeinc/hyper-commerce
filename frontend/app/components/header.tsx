@@ -3,6 +3,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { Suspense } from "react";
 import { SearchInputSkeleton } from "./skeletons";
 import Logo from "./logo";
+import Cart from "./cart";
 
 export default function Header() {
   return (
@@ -14,9 +15,10 @@ export default function Header() {
         <Suspense fallback={<SearchInputSkeleton />}>
           <Search />
         </Suspense>
-        <button className="relative flex h-11 w-11 items-center justify-center rounded-md border transition-colors border-neutral-700 text-white">
+        {/* <button className="relative flex h-11 w-11 items-center justify-center rounded-md border transition-colors border-neutral-700 text-white">
           <ShoppingCartIcon className="h-4 transition-all ease-in-out hover:scale-110" />
-        </button>
+        </button> */}
+        <Cart />
       </div>
       <div className="md:hidden items-center justify-between px-4">
         <div className="flex items-center justify-between mb-2">
