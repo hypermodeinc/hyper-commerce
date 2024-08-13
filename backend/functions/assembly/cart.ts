@@ -18,8 +18,9 @@ export function addToCart(
     return result;
   }
 
-  const currentQuantity = getCartProductQuantity(cartId, productId) || 0;
+  const currentQuantity = getCartProductQuantity(cartId, productId);
   const newQuantity = currentQuantity + quantity;
+  console.log(`Upserting new quantity: ${newQuantity}`);
   return upsertCartProductQuantity(cartId, productId, newQuantity);
 }
 

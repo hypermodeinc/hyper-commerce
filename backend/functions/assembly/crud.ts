@@ -271,14 +271,12 @@ export function upsertCartProductList(
 export function upsertCartProductQuantity(
   cartId: string,
   productId: string,
-  quantity: number,
+  quantity: f64,
 ): string {
   const key = `${cartId}-${productId}`;
-  const result = collections.upsert(
-    consts.cartQuantities,
-    key,
-    quantity.toString(),
-  );
+  const quantityStr = quantity.toString();
+  console.log(`Upserting quantity: key = ${key}, value = ${quantityStr}`);
+  const result = collections.upsert(consts.cartQuantities, key, quantityStr);
   if (!result.isSuccessful) {
     return result.error;
   }
