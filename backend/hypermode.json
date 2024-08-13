@@ -37,7 +37,10 @@
     "isProductStocked": {
       "searchMethods": {}
     },
-    "carts": {
+    "cartQuantities": {
+      "searchMethods": {}
+    },
+    "cartProductList": {
       "searchMethods": {}
     }
   }

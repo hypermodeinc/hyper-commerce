@@ -233,7 +233,7 @@ export function getProducts(ids: string[]): Product[] {
 }
 
 export function getCartProductList(cartId: string): string {
-  return collections.getText(consts.cartProductListCollection, cartId) || "";
+  return collections.getText(consts.cartProductList, cartId) || "";
 }
 
 export function getCartProductQuantity(
@@ -241,7 +241,7 @@ export function getCartProductQuantity(
   productId: string,
 ): number {
   const quantityStr = collections.getText(
-    consts.cartQuantitiesCollection,
+    consts.cartQuantities,
     `${cartId}-${productId}`,
   );
   return quantityStr ? parseInt(quantityStr, 10) : 0;
@@ -252,13 +252,13 @@ export function upsertCartProductList(
   productId: string,
 ): string {
   const existingList =
-    collections.getText(consts.cartProductListCollection, cartId) || "";
+    collections.getText(consts.cartProductList, cartId) || "";
   if (existingList.indexOf(productId) !== -1) {
     return "success";
   }
   const updatedList = existingList ? `${existingList},${productId}` : productId;
   const result = collections.upsert(
-    consts.cartProductListCollection,
+    consts.cartProductList,
     cartId,
     updatedList,
   );
@@ -275,7 +275,7 @@ export function upsertCartProductQuantity(
 ): string {
   const key = `${cartId}-${productId}`;
   const result = collections.upsert(
-    consts.cartQuantitiesCollection,
+    consts.cartQuantities,
     key,
     quantity.toString(),
   );
@@ -290,7 +290,7 @@ export function removeCartProductFromList(
   productId: string,
 ): string {
   const existingList =
-    collections.getText(consts.cartProductListCollection, cartId) || "";
+    collections.getText(consts.cartProductList, cartId) || "";
   const productIds = existingList.split(",");
   let updatedList = "";
 
@@ -304,7 +304,7 @@ export function removeCartProductFromList(
   }
 
   const result = collections.upsert(
-    consts.cartProductListCollection,
+    consts.cartProductList,
     cartId,
     updatedList,
   );
@@ -319,7 +319,7 @@ export function removeCartProductQuantity(
   productId: string,
 ): string {
   const key = `${cartId}-${productId}`;
-  const result = collections.remove(consts.cartQuantitiesCollection, key);
+  const result = collections.remove(consts.cartQuantities, key);
 
   if (!result.isSuccessful) {
     return result.error;
