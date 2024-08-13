@@ -232,8 +232,95 @@ export function getProducts(ids: string[]): Product[] {
   return products;
 }
 
-export function upsertCart(cartId: string, cart: Cart): string {
-  const result = collections.upsert(consts.cartCollection, cartId, cart);
+export function getCartProductList(cartId: string): string {
+  return collections.getText(consts.cartProductListCollection, cartId) || "";
+}
+
+export function getCartProductQuantity(
+  cartId: string,
+  productId: string,
+): number {
+  const quantityStr = collections.getText(
+    consts.cartQuantitiesCollection,
+    `${cartId}-${productId}`,
+  );
+  return quantityStr ? parseInt(quantityStr, 10) : 0;
+}
+
+export function upsertCartProductList(
+  cartId: string,
+  productId: string,
+): string {
+  const existingList =
+    collections.getText(consts.cartProductListCollection, cartId) || "";
+  if (existingList.indexOf(productId) !== -1) {
+    return "success";
+  }
+  const updatedList = existingList ? `${existingList},${productId}` : productId;
+  const result = collections.upsert(
+    consts.cartProductListCollection,
+    cartId,
+    updatedList,
+  );
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return "success";
+}
+
+export function upsertCartProductQuantity(
+  cartId: string,
+  productId: string,
+  quantity: number,
+): string {
+  const key = `${cartId}-${productId}`;
+  const result = collections.upsert(
+    consts.cartQuantitiesCollection,
+    key,
+    quantity.toString(),
+  );
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return "success";
+}
+
+export function removeCartProductFromList(
+  cartId: string,
+  productId: string,
+): string {
+  const existingList =
+    collections.getText(consts.cartProductListCollection, cartId) || "";
+  const productIds = existingList.split(",");
+  let updatedList = "";
+
+  for (let i = 0; i < productIds.length; i++) {
+    if (productIds[i] !== productId) {
+      if (updatedList.length > 0) {
+        updatedList += ",";
+      }
+      updatedList += productIds[i];
+    }
+  }
+
+  const result = collections.upsert(
+    consts.cartProductListCollection,
+    cartId,
+    updatedList,
+  );
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return "success";
+}
+
+export function removeCartProductQuantity(
+  cartId: string,
+  productId: string,
+): string {
+  const key = `${cartId}-${productId}`;
+  const result = collections.remove(consts.cartQuantitiesCollection, key);
+
   if (!result.isSuccessful) {
     return result.error;
   }
