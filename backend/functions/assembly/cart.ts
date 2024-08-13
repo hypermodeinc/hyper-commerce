@@ -1,34 +1,52 @@
-import { upsertCart } from "./crud";
-import { Cart, CartItem, consts } from "./types";
-import { collections } from "@hypermode/functions-as";
+import {
+  getCartProductList,
+  getCartProductQuantity,
+  upsertCartProductList,
+  upsertCartProductQuantity,
+  removeCartProductFromList,
+  removeCartProductQuantity,
+} from "./crud";
+import { CartItem } from "./types";
 
-export function addToCart(cartId: string, productId: string, quantity: i32): string {
-  let cart = collections.getObject<Cart>(consts.cartCollection, cartId);
-  if (!cart) {
-    cart = new Cart(cartId);
+export function addToCart(
+  cartId: string,
+  productId: string,
+  quantity: number,
+): string {
+  const result = upsertCartProductList(cartId, productId);
+  if (result !== "success") {
+    return result;
   }
-  const itemIndex = cart.items.findIndex(item => item.productId === productId);
-  if (itemIndex !== -1) {
-    cart.items[itemIndex].quantity += quantity;
-  } else {
-    cart.items.push(new CartItem(productId, quantity));
-  }
-  return upsertCart(cartId, cart);
+
+  const currentQuantity = getCartProductQuantity(cartId, productId);
+  const newQuantity = currentQuantity + quantity;
+  return upsertCartProductQuantity(cartId, productId, newQuantity);
 }
 
 export function removeFromCart(cartId: string, productId: string): string {
-  let cart = collections.getObject<Cart>(consts.cartCollection, cartId);
-  if (!cart) {
-    return "Cart not found";
+  const result = removeCartProductFromList(cartId, productId);
+  if (result !== "success") {
+    return result;
   }
-  cart.items = cart.items.filter(item => item.productId !== productId);
-  return upsertCart(cartId, cart);
+
+  return removeCartProductQuantity(cartId, productId);
 }
 
-export function getCart(cartId: string): Cart {
-  const cart = collections.getObject<Cart>(consts.cartCollection, cartId);
-  if (!cart) {
-    return new Cart(cartId);
+export function getCart(cartId: string): CartItem[] {
+  const productList = getCartProductList(cartId);
+  const cartItems: CartItem[] = [];
+
+  if (!productList) {
+    return cartItems;
   }
-  return cart;
+
+  const productIds = productList.split(",");
+
+  for (let i = 0; i < productIds.length; i++) {
+    const productId = productIds[i];
+    const quantity = getCartProductQuantity(cartId, productId);
+    cartItems.push(new CartItem(productId, quantity));
+  }
+
+  return cartItems;
 }
