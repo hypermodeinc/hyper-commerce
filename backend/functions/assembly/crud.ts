@@ -232,18 +232,15 @@ export function getProducts(ids: string[]): Product[] {
   return products;
 }
 
-// Helper function to serialize a CartItem to a string
 function serializeCartItem(item: CartItem): string {
-  return `${item.productId}:${item.quantity}`;
+  return `${item.productId}:${item.quantity.toString()}`;
 }
 
-// Helper function to deserialize a string to a CartItem
 function deserializeCartItem(itemStr: string): CartItem {
   const parts = itemStr.split(":");
   return new CartItem(parts[0], parseFloat(parts[1]));
 }
 
-// Helper function to serialize a Cart to a string
 function serializeCart(cart: Cart): string {
   let serializedItems = "";
   for (let i = 0; i < cart.items.length; i++) {
@@ -255,7 +252,6 @@ function serializeCart(cart: Cart): string {
   return serializedItems;
 }
 
-// Helper function to deserialize a string to a Cart
 function deserializeCart(cartId: string, cartStr: string): Cart {
   const items: CartItem[] = [];
   const itemStrings = cartStr.split(",");
@@ -265,7 +261,6 @@ function deserializeCart(cartId: string, cartStr: string): Cart {
   return new Cart(cartId, items);
 }
 
-// Upsert a cart into the carts collection
 export function upsertCart(cart: Cart): string {
   const cartStr = serializeCart(cart);
   const result = collections.upsert(
@@ -276,13 +271,11 @@ export function upsertCart(cart: Cart): string {
   return result.isSuccessful ? "success" : result.error;
 }
 
-// Retrieve a cart from the carts collection
 export function getCart(cartId: string): Cart {
   const cartStr = collections.getText(consts.cartCollection, cartId);
   return cartStr ? deserializeCart(cartId, cartStr) : new Cart(cartId);
 }
 
-// Delete a cart from the carts collection
 export function deleteCart(cartId: string): string {
   const result = collections.remove(consts.cartCollection, cartId);
   return result.isSuccessful ? "success" : result.error;

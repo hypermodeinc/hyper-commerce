@@ -6,7 +6,7 @@ export function addToCart(
   productId: string,
   quantity: f64,
 ): Cart {
-  let cart = getCart(cartId);
+  const cart = getCart(cartId);
 
   let itemFound = false;
   for (let i = 0; i < cart.items.length; i++) {
@@ -27,13 +27,14 @@ export function addToCart(
 
 export function removeFromCart(cartId: string, productId: string): Cart {
   const cart = getCart(cartId);
-
   const newItems: CartItem[] = [];
+
   for (let i = 0; i < cart.items.length; i++) {
     if (cart.items[i].productId !== productId) {
       newItems.push(cart.items[i]);
     }
   }
+
   cart.items = newItems;
 
   upsertCart(cart);
