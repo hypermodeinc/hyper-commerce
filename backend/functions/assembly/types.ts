@@ -49,7 +49,8 @@ export class Cart {
 export class CartItem {
   constructor(
     public productId: string,
-    public quantity: number,
+    public quantity: f64,
+
   ) {}
 }
 
