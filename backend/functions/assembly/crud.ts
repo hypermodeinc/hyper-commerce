@@ -240,18 +240,11 @@ export function getCartProductQuantity(
   cartId: string,
   productId: string,
 ): number {
-  const key = `${cartId}-${productId}`;
-  console.log(`Fetching quantity for key: ${key}`);
-  const quantityStr = collections.getText(consts.cartQuantities, key);
-
-  // If the key doesn't exist, default to 0
-  if (!quantityStr) {
-    console.log(`No quantity found for key: ${key}, defaulting to 0`);
-    return 0;
-  }
-
-  console.log(`Fetched quantity: ${quantityStr}`);
-  return parseInt(quantityStr, 10);
+  const quantityStr = collections.getText(
+    consts.cartQuantities,
+    `${cartId}-${productId}`,
+  );
+  return quantityStr ? parseInt(quantityStr, 10) : 0;
 }
 
 export function upsertCartProductList(
@@ -281,21 +274,14 @@ export function upsertCartProductQuantity(
   quantity: f64,
 ): string {
   const key = `${cartId}-${productId}`;
-  const quantityStr = quantity.toString();
-  console.log(`Upserting quantity for key: ${key}, value: ${quantityStr}`);
-
-  const result = collections.upsert(consts.cartQuantities, key, quantityStr);
-
+  const result = collections.upsert(
+    consts.cartQuantities,
+    key,
+    quantity.toString(),
+  );
   if (!result.isSuccessful) {
-    console.error(
-      `Error upserting quantity for key: ${key}, value: ${quantityStr}`,
-    );
     return result.error;
   }
-
-  console.log(
-    `Successfully upserted quantity for key: ${key}, value: ${quantityStr}`,
-  );
   return "success";
 }
 

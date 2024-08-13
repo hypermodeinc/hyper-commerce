@@ -12,7 +12,7 @@ export function addToCart(
   cartId: string,
   productId: string,
   quantity: f64,
-): string {
+): CartItem[] {
   console.log(
     `Adding to cart: cartId = ${cartId}, productId = ${productId}, quantity = ${quantity}`,
   );
@@ -20,14 +20,24 @@ export function addToCart(
   const result = upsertCartProductList(cartId, productId);
   if (result !== "success") {
     console.error(`Error adding product to list: ${result}`);
-    return result;
+    return [];
   }
 
   const currentQuantity = getCartProductQuantity(cartId, productId);
   const newQuantity = currentQuantity + quantity;
   console.log(`Upserting new quantity: ${newQuantity}`);
 
-  return upsertCartProductQuantity(cartId, productId, newQuantity);
+  const upsertResult = upsertCartProductQuantity(
+    cartId,
+    productId,
+    newQuantity,
+  );
+  if (upsertResult !== "success") {
+    console.error(`Error upserting product quantity: ${upsertResult}`);
+    return [];
+  }
+
+  return getCart(cartId); // Return the updated cart
 }
 
 export function removeFromCart(cartId: string, productId: string): string {
