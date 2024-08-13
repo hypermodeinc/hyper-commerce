@@ -35,13 +35,6 @@ export class ProductSearchResult {
   ) {}
 }
 
-@json
-export class CartItem {
-  constructor(
-    public productId: string,
-    public quantity: i32,
-  ) {}
-}
 
 @json
 export class Cart {
@@ -50,6 +43,7 @@ export class Cart {
     public items: CartItem[] = [],
   ) {}
 }
+
 
 @json
 export class CartItem {
