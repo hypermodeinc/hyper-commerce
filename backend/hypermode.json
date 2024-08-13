@@ -36,6 +36,9 @@
     },
     "isProductStocked": {
       "searchMethods": {}
+    },
+    "carts": {
+      "searchMethods": {}
     }
   }
 }
