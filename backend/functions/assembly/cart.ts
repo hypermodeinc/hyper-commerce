@@ -13,14 +13,20 @@ export function addToCart(
   productId: string,
   quantity: f64,
 ): string {
+  console.log(
+    `Adding to cart: cartId = ${cartId}, productId = ${productId}, quantity = ${quantity}`,
+  );
+
   const result = upsertCartProductList(cartId, productId);
   if (result !== "success") {
+    console.error(`Error adding product to list: ${result}`);
     return result;
   }
 
   const currentQuantity = getCartProductQuantity(cartId, productId);
   const newQuantity = currentQuantity + quantity;
   console.log(`Upserting new quantity: ${newQuantity}`);
+
   return upsertCartProductQuantity(cartId, productId, newQuantity);
 }
 
