@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { Product, consts } from "./types";
+import { Product, Cart, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -230,4 +230,12 @@ export function getProducts(ids: string[]): Product[] {
     products.push(getProduct(ids[i]));
   }
   return products;
+}
+
+export function upsertCart(cartId: string, cart: Cart): string {
+  const result = collections.upsert(consts.cartCollection, cartId, cart);
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return "success";
 }
