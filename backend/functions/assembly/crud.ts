@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { Product, consts } from "./types";
+import { Product, Cart, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -320,6 +320,7 @@ export function removeCartProductQuantity(
 ): string {
   const key = `${cartId}-${productId}`;
   const result = collections.remove(consts.cartQuantitiesCollection, key);
+
   if (!result.isSuccessful) {
     return result.error;
   }

@@ -35,6 +35,21 @@ export class ProductSearchResult {
   ) {}
 }
 
+@json
+export class CartItem {
+  constructor(
+    public productId: string,
+    public quantity: i32,
+  ) {}
+}
+
+@json
+export class Cart {
+  constructor(
+    public cartId: string,
+    public items: CartItem[] = [],
+  ) {}
+}
 
 @json
 export class CartItem {
@@ -61,4 +76,5 @@ export class consts {
 
   static readonly searchMethod: string = "searchMethod1";
   static readonly embeddingModel: string = "minilm";
+  static readonly cartCollection: string = "carts";
 }
