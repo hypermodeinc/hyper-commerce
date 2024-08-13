@@ -11,14 +11,14 @@ import { CartItem } from "./types";
 export function addToCart(
   cartId: string,
   productId: string,
-  quantity: number,
+  quantity: f64,
 ): string {
   const result = upsertCartProductList(cartId, productId);
   if (result !== "success") {
     return result;
   }
 
-  const currentQuantity = getCartProductQuantity(cartId, productId);
+  const currentQuantity = getCartProductQuantity(cartId, productId) || 0;
   const newQuantity = currentQuantity + quantity;
   return upsertCartProductQuantity(cartId, productId, newQuantity);
 }
