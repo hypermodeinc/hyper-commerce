@@ -1,69 +1,50 @@
-import {
-  getCartProductList,
-  getCartProductQuantity,
-  upsertCartProductList,
-  upsertCartProductQuantity,
-  removeCartProductFromList,
-  removeCartProductQuantity,
-} from "./crud";
-import { CartItem } from "./types";
+import { getCart, upsertCart, deleteCart } from "./crud";
+import { Cart, CartItem } from "./types";
 
 export function addToCart(
   cartId: string,
   productId: string,
   quantity: f64,
-): CartItem[] {
-  console.log(
-    `Adding to cart: cartId = ${cartId}, productId = ${productId}, quantity = ${quantity}`,
-  );
+): Cart {
+  let cart = getCart(cartId);
 
-  const result = upsertCartProductList(cartId, productId);
-  if (result !== "success") {
-    console.error(`Error adding product to list: ${result}`);
-    return [];
+  let itemFound = false;
+  for (let i = 0; i < cart.items.length; i++) {
+    if (cart.items[i].productId === productId) {
+      cart.items[i].quantity += quantity;
+      itemFound = true;
+      break;
+    }
   }
 
-  const currentQuantity = getCartProductQuantity(cartId, productId);
-  const newQuantity = currentQuantity + quantity;
-  console.log(`Upserting new quantity: ${newQuantity}`);
-
-  const upsertResult = upsertCartProductQuantity(
-    cartId,
-    productId,
-    newQuantity,
-  );
-  if (upsertResult !== "success") {
-    console.error(`Error upserting product quantity: ${upsertResult}`);
-    return [];
+  if (!itemFound) {
+    cart.items.push(new CartItem(productId, quantity));
   }
 
-  return getCart(cartId); // Return the updated cart
+  upsertCart(cart);
+  return cart;
 }
 
-export function removeFromCart(cartId: string, productId: string): string {
-  const result = removeCartProductFromList(cartId, productId);
-  if (result !== "success") {
-    return result;
-  }
+export function removeFromCart(cartId: string, productId: string): Cart {
+  const cart = getCart(cartId);
 
-  return removeCartProductQuantity(cartId, productId);
+  const newItems: CartItem[] = [];
+  for (let i = 0; i < cart.items.length; i++) {
+    if (cart.items[i].productId !== productId) {
+      newItems.push(cart.items[i]);
+    }
+  }
+  cart.items = newItems;
+
+  upsertCart(cart);
+  return cart;
 }
 
-export function getCart(cartId: string): CartItem[] {
-  const productList = getCartProductList(cartId);
-  const cartItems: CartItem[] = [];
+export function clearCart(cartId: string): string {
+  return deleteCart(cartId);
+}
 
-  if (!productList) {
-    return cartItems;
-  }
-
-  const productIds = productList.split(",");
-
-  for (let i = 0; i < productIds.length; i++) {
-    const productId = productIds[i];
-    const quantity = getCartProductQuantity(cartId, productId);
-    cartItems.push(new CartItem(productId, quantity));
-  }
-
-  return cartItems;
+export function getCartItems(cartId: string): CartItem[] {
+  const cart = getCart(cartId);
+  return cart.items;
 }

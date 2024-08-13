@@ -37,19 +37,19 @@ export class ProductSearchResult {
 
 
 @json
-export class Cart {
+export class CartItem {
   constructor(
-    public cartId: string,
-    public items: CartItem[] = [],
+    public productId: string,
+    public quantity: f64,
   ) {}
 }
 
 
 @json
-export class CartItem {
+export class Cart {
   constructor(
-    public productId: string,
-    public quantity: f64,
+    public cartId: string,
+    public items: CartItem[] = [],
   ) {}
 }
 
@@ -64,10 +64,8 @@ export class consts {
   static readonly productStarCollection: string = "productStars";
   static readonly isProductStockedCollection: string = "isProductStocked";
 
-  static readonly cartQuantities: string = "cartQuantities";
-  static readonly cartProductList: string = "cartProductLists";
+  static readonly cartCollection: string = "carts";
 
   static readonly searchMethod: string = "searchMethod1";
   static readonly embeddingModel: string = "minilm";
-  static readonly cartCollection: string = "carts";
 }

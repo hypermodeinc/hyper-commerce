@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { Product, Cart, consts } from "./types";
+import { Product, Cart, CartItem, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -232,97 +232,58 @@ export function getProducts(ids: string[]): Product[] {
   return products;
 }
 
-export function getCartProductList(cartId: string): string {
-  return collections.getText(consts.cartProductList, cartId) || "";
+// Helper function to serialize a CartItem to a string
+function serializeCartItem(item: CartItem): string {
+  return `${item.productId}:${item.quantity}`;
 }
 
-export function getCartProductQuantity(
-  cartId: string,
-  productId: string,
-): number {
-  const quantityStr = collections.getText(
-    consts.cartQuantities,
-    `${cartId}-${productId}`,
-  );
-  return quantityStr ? parseInt(quantityStr, 10) : 0;
+// Helper function to deserialize a string to a CartItem
+function deserializeCartItem(itemStr: string): CartItem {
+  const parts = itemStr.split(":");
+  return new CartItem(parts[0], parseFloat(parts[1]));
 }
 
-export function upsertCartProductList(
-  cartId: string,
-  productId: string,
-): string {
-  const existingList =
-    collections.getText(consts.cartProductList, cartId) || "";
-  if (existingList.indexOf(productId) !== -1) {
-    return "success";
-  }
-  const updatedList = existingList ? `${existingList},${productId}` : productId;
-  const result = collections.upsert(
-    consts.cartProductList,
-    cartId,
-    updatedList,
-  );
-  if (!result.isSuccessful) {
-    return result.error;
-  }
-  return "success";
-}
-
-export function upsertCartProductQuantity(
-  cartId: string,
-  productId: string,
-  quantity: f64,
-): string {
-  const key = `${cartId}-${productId}`;
-  const result = collections.upsert(
-    consts.cartQuantities,
-    key,
-    quantity.toString(),
-  );
-  if (!result.isSuccessful) {
-    return result.error;
-  }
-  return "success";
-}
-
-export function removeCartProductFromList(
-  cartId: string,
-  productId: string,
-): string {
-  const existingList =
-    collections.getText(consts.cartProductList, cartId) || "";
-  const productIds = existingList.split(",");
-  let updatedList = "";
-
-  for (let i = 0; i < productIds.length; i++) {
-    if (productIds[i] !== productId) {
-      if (updatedList.length > 0) {
-        updatedList += ",";
-      }
-      updatedList += productIds[i];
+// Helper function to serialize a Cart to a string
+function serializeCart(cart: Cart): string {
+  let serializedItems = "";
+  for (let i = 0; i < cart.items.length; i++) {
+    if (i > 0) {
+      serializedItems += ",";
     }
+    serializedItems += serializeCartItem(cart.items[i]);
   }
-
-  const result = collections.upsert(
-    consts.cartProductList,
-    cartId,
-    updatedList,
-  );
-  if (!result.isSuccessful) {
-    return result.error;
-  }
-  return "success";
+  return serializedItems;
 }
 
-export function removeCartProductQuantity(
-  cartId: string,
-  productId: string,
-): string {
-  const key = `${cartId}-${productId}`;
-  const result = collections.remove(consts.cartQuantities, key);
-
-  if (!result.isSuccessful) {
-    return result.error;
+// Helper function to deserialize a string to a Cart
+function deserializeCart(cartId: string, cartStr: string): Cart {
+  const items: CartItem[] = [];
+  const itemStrings = cartStr.split(",");
+  for (let i = 0; i < itemStrings.length; i++) {
+    items.push(deserializeCartItem(itemStrings[i]));
   }
-  return "success";
+  return new Cart(cartId, items);
+}
+
+// Upsert a cart into the carts collection
+export function upsertCart(cart: Cart): string {
+  const cartStr = serializeCart(cart);
+  const result = collections.upsert(
+    consts.cartCollection,
+    cart.cartId,
+    cartStr,
+  );
+  return result.isSuccessful ? "success" : result.error;
+}
+
+// Retrieve a cart from the carts collection
+export function getCart(cartId: string): Cart {
+  const cartStr = collections.getText(consts.cartCollection, cartId);
+  return cartStr ? deserializeCart(cartId, cartStr) : new Cart(cartId);
+}
+
+// Delete a cart from the carts collection
+export function deleteCart(cartId: string): string {
+  const result = collections.remove(consts.cartCollection, cartId);
+  return result.isSuccessful ? "success" : result.error;
 }
