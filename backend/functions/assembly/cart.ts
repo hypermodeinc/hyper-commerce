@@ -56,9 +56,11 @@ export function removeFromCart(
     ? "success"
     : "error";
 }
+
 export function getCartItems(userId: string, cartId: string): CartItem[] {
   const cartKey = `${userId}:${cartId}`;
   const items: CartItem[] = [];
+
   const productIds = collections.search(
     consts.cartProductIdsCollection,
     "",
@@ -67,7 +69,7 @@ export function getCartItems(userId: string, cartId: string): CartItem[] {
   ).objects;
 
   for (let i = 0; i < productIds.length; i++) {
-    const productId = productIds[i].key.split(":")[2];
+    const productId = productIds[i].key.split(":")[1];
     const quantity = parseFloat(
       collections.getText(
         consts.cartQuantitiesCollection,

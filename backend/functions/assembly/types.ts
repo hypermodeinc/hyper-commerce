@@ -64,7 +64,6 @@ export class consts {
   static readonly productStarCollection: string = "productStars";
   static readonly isProductStockedCollection: string = "isProductStocked";
 
-  // Define these for your cart collections:
   static readonly cartIdsCollection: string = "cartIds";
   static readonly cartProductIdsCollection: string = "cartProductIds";
   static readonly cartQuantitiesCollection: string = "cartQuantities";
