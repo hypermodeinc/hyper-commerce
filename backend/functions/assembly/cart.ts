@@ -61,15 +61,15 @@ export function getCartItems(userId: string, cartId: string): CartItem[] {
   const cartKey = `${userId}:${cartId}`;
   const items: CartItem[] = [];
 
-  const productIds = collections.search(
+  const productIds = collections.getText(
     consts.cartProductIdsCollection,
-    "",
     cartKey,
-    100,
-  ).objects;
+  );
 
-  for (let i = 0; i < productIds.length; i++) {
-    const productId = productIds[i].key.split(":")[1];
+  const productIdArray = productIds ? productIds.split(",") : [];
+
+  for (let i = 0; i < productIdArray.length; i++) {
+    const productId = productIdArray[i];
     const quantity = parseFloat(
       collections.getText(
         consts.cartQuantitiesCollection,
