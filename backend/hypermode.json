@@ -41,7 +41,14 @@
       "searchMethods": {}
     },
     "cartProductIds": {
-      "searchMethods": {}
+      "searchMethods": {
+        "defaultSearch": {
+          "embedder": "miniLMEmbed",
+          "index": {
+            "type": "sequential"
+          }
+        }
+      }
     },
     "cartQuantities": {
       "searchMethods": {}
