@@ -1,51 +1,81 @@
-import { getCart, upsertCart, deleteCart } from "./crud";
-import { Cart, CartItem } from "./types";
+import { CartItem, consts } from "./types";
+import { collections } from "@hypermode/functions-as";
 
 export function addToCart(
+  userId: string,
   cartId: string,
   productId: string,
   quantity: f64,
-): Cart {
-  const cart = getCart(cartId);
+): string {
+  const cartKey = `${userId}:${cartId}`;
+  const itemKey = `${cartKey}:${productId}`;
+  const existingQuantity = collections.getText(
+    consts.cartQuantitiesCollection,
+    itemKey,
+  );
+  let newQuantity = quantity;
 
-  let itemFound = false;
-  for (let i = 0; i < cart.items.length; i++) {
-    if (cart.items[i].productId === productId) {
-      cart.items[i].quantity += quantity;
-      itemFound = true;
-      break;
-    }
+  if (existingQuantity) {
+    newQuantity += parseFloat(existingQuantity);
   }
 
-  if (!itemFound) {
-    cart.items.push(new CartItem(productId, quantity));
+  const resultQuantity = collections.upsert(
+    consts.cartQuantitiesCollection,
+    itemKey,
+    newQuantity.toString(),
+  );
+
+  const resultProduct = collections.upsert(
+    consts.cartProductIdsCollection,
+    itemKey,
+    productId,
+  );
+
+  return resultQuantity.isSuccessful && resultProduct.isSuccessful
+    ? "success"
+    : "error";
+}
+export function removeFromCart(
+  userId: string,
+  cartId: string,
+  productId: string,
+): string {
+  const cartKey = `${userId}:${cartId}`;
+  const itemKey = `${cartKey}:${productId}`;
+  const resultQuantity = collections.remove(
+    consts.cartQuantitiesCollection,
+    itemKey,
+  );
+
+  const resultProduct = collections.remove(
+    consts.cartProductIdsCollection,
+    itemKey,
+  );
+
+  return resultQuantity.isSuccessful && resultProduct.isSuccessful
+    ? "success"
+    : "error";
+}
+export function getCartItems(userId: string, cartId: string): CartItem[] {
+  const cartKey = `${userId}:${cartId}`;
+  const items: CartItem[] = [];
+  const productIds = collections.search(
+    consts.cartProductIdsCollection,
+    "",
+    cartKey,
+    100,
+  ).objects;
+
+  for (let i = 0; i < productIds.length; i++) {
+    const productId = productIds[i].key.split(":")[2];
+    const quantity = parseFloat(
+      collections.getText(
+        consts.cartQuantitiesCollection,
+        `${cartKey}:${productId}`,
+      ),
+    );
+    items.push(new CartItem(productId, quantity));
   }
 
-  upsertCart(cart);
-  return cart;
-}
-
-export function removeFromCart(cartId: string, productId: string): Cart {
-  const cart = getCart(cartId);
-  const newItems: CartItem[] = [];
-
-  for (let i = 0; i < cart.items.length; i++) {
-    if (cart.items[i].productId !== productId) {
-      newItems.push(cart.items[i]);
-    }
-  }
-
-  cart.items = newItems;
-
-  upsertCart(cart);
-  return cart;
-}
-
-export function clearCart(cartId: string): string {
-  return deleteCart(cartId);
-}
-
-export function getCartItems(cartId: string): CartItem[] {
-  const cart = getCart(cartId);
-  return cart.items;
+  return items;
 }
