@@ -1,3 +1,4 @@
+// import { getCart, upsertCart, deleteCart } from "./crud";
 import { CartItem, consts } from "./types";
 import { collections } from "@hypermode/functions-as";
 
@@ -56,20 +57,18 @@ export function removeFromCart(
     ? "success"
     : "error";
 }
-
 export function getCartItems(userId: string, cartId: string): CartItem[] {
   const cartKey = `${userId}:${cartId}`;
   const items: CartItem[] = [];
-
-  const productIds = collections.getText(
+  const productIds = collections.search(
     consts.cartProductIdsCollection,
+    "defaultSearch",
     cartKey,
-  );
+    100,
+  ).objects;
 
-  const productIdArray = productIds ? productIds.split(",") : [];
-
-  for (let i = 0; i < productIdArray.length; i++) {
-    const productId = productIdArray[i];
+  for (let i = 0; i < productIds.length; i++) {
+    const productId = productIds[i].key.split(":")[2];
     const quantity = parseFloat(
       collections.getText(
         consts.cartQuantitiesCollection,
