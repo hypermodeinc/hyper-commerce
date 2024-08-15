@@ -42,10 +42,10 @@
     },
     "cartProductIds": {
       "searchMethods": {
-        "defaultSearch": {
-          "embedder": "miniLMEmbed",
+        "prefixSearch": {
+          "embedder": null,
           "index": {
-            "type": "sequential"
+            "type": "prefix"
           }
         }
       }

@@ -60,15 +60,16 @@ export function removeFromCart(
 export function getCartItems(userId: string, cartId: string): CartItem[] {
   const cartKey = `${userId}:${cartId}`;
   const items: CartItem[] = [];
-  const productIds = collections.search(
+
+  const searchResults = collections.search(
     consts.cartProductIdsCollection,
-    "defaultSearch",
+    "prefixSearch",
     cartKey,
     100,
   ).objects;
 
-  for (let i = 0; i < productIds.length; i++) {
-    const productId = productIds[i].key.split(":")[2];
+  for (let i = 0; i < searchResults.length; i++) {
+    const productId = searchResults[i].key.split(":")[2];
     const quantity = parseFloat(
       collections.getText(
         consts.cartQuantitiesCollection,
