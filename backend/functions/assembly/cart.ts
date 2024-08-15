@@ -10,12 +10,13 @@ export function addToCart(
 ): string {
   const cartKey = `${userId}:${cartId}`;
   const itemKey = `${cartKey}:${productId}`;
+
   const existingQuantity = collections.getText(
     consts.cartQuantitiesCollection,
     itemKey,
   );
-  let newQuantity = quantity;
 
+  let newQuantity = quantity;
   if (existingQuantity) {
     newQuantity += parseFloat(existingQuantity);
   }
@@ -26,16 +27,33 @@ export function addToCart(
     newQuantity.toString(),
   );
 
-  const resultProduct = collections.upsert(
+  if (!resultQuantity.isSuccessful) {
+    return "error";
+  }
+
+  let productIds = collections.getText(
     consts.cartProductIdsCollection,
-    itemKey,
-    productId,
+    cartKey,
   );
 
-  return resultQuantity.isSuccessful && resultProduct.isSuccessful
-    ? "success"
-    : "error";
+  if (productIds) {
+    const productIdArray = productIds.split(",");
+    if (!productIdArray.includes(productId)) {
+      productIds += `,${productId}`;
+    }
+  } else {
+    productIds = productId;
+  }
+
+  const resultProductIds = collections.upsert(
+    consts.cartProductIdsCollection,
+    cartKey,
+    productIds,
+  );
+
+  return resultProductIds.isSuccessful ? "success" : "error";
 }
+
 export function removeFromCart(
   userId: string,
   cartId: string,
@@ -57,26 +75,27 @@ export function removeFromCart(
     ? "success"
     : "error";
 }
+
 export function getCartItems(userId: string, cartId: string): CartItem[] {
   const cartKey = `${userId}:${cartId}`;
   const items: CartItem[] = [];
 
-  const searchResults = collections.search(
+  const productIds = collections.getText(
     consts.cartProductIdsCollection,
-    "prefixSearch",
     cartKey,
-    100,
-  ).objects;
+  );
+  const productIdArray = productIds ? productIds.split(",") : [];
 
-  for (let i = 0; i < searchResults.length; i++) {
-    const productId = searchResults[i].key.split(":")[2];
-    const quantity = parseFloat(
-      collections.getText(
-        consts.cartQuantitiesCollection,
-        `${cartKey}:${productId}`,
-      ),
+  for (let i = 0; i < productIdArray.length; i++) {
+    const productId = productIdArray[i];
+    const quantityText = collections.getText(
+      consts.cartQuantitiesCollection,
+      `${cartKey}:${productId}`,
     );
-    items.push(new CartItem(productId, quantity));
+    if (quantityText) {
+      const quantity = parseFloat(quantityText);
+      items.push(new CartItem(productId, quantity));
+    }
   }
 
   return items;
