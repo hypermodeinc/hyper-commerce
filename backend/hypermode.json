@@ -41,14 +41,7 @@
       "searchMethods": {}
     },
     "cartProductIds": {
-      "searchMethods": {
-        "prefixSearch": {
-          "embedder": null,
-          "index": {
-            "type": "prefix"
-          }
-        }
-      }
+      "searchMethods": {}
     },
     "cartQuantities": {
       "searchMethods": {}
