@@ -2,3 +2,4 @@ requests
 pandas
 numpy
 gql
+requests_toolbelt
