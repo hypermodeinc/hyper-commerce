@@ -36,15 +36,6 @@
     },
     "isProductStocked": {
       "searchMethods": {}
-    },
-    "cartIds": {
-      "searchMethods": {}
-    },
-    "cartProductIds": {
-      "searchMethods": {}
-    },
-    "cartQuantities": {
-      "searchMethods": {}
     }
   }
 }

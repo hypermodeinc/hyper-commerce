@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { Product, Cart, CartItem, consts } from "./types";
+import { Product, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -231,52 +231,3 @@ export function getProducts(ids: string[]): Product[] {
   }
   return products;
 }
-
-// function serializeCartItem(item: CartItem): string {
-//   return `${item.productId}:${item.quantity.toString()}`;
-// }
-
-// function deserializeCartItem(itemStr: string): CartItem {
-//   const parts = itemStr.split(":");
-//   return new CartItem(parts[0], parseFloat(parts[1]));
-// }
-
-// function serializeCart(cart: Cart): string {
-//   let serializedItems = "";
-//   for (let i = 0; i < cart.items.length; i++) {
-//     if (i > 0) {
-//       serializedItems += ",";
-//     }
-//     serializedItems += serializeCartItem(cart.items[i]);
-//   }
-//   return serializedItems;
-// }
-
-// function deserializeCart(cartId: string, cartStr: string): Cart {
-//   const items: CartItem[] = [];
-//   const itemStrings = cartStr.split(",");
-//   for (let i = 0; i < itemStrings.length; i++) {
-//     items.push(deserializeCartItem(itemStrings[i]));
-//   }
-//   return new Cart(cartId, items);
-// }
-
-// export function upsertCart(cart: Cart): string {
-//   const cartStr = serializeCart(cart);
-//   const result = collections.upsert(
-//     consts.cartCollection,
-//     cart.cartId,
-//     cartStr,
-//   );
-//   return result.isSuccessful ? "success" : result.error;
-// }
-
-// export function getCart(cartId: string): Cart {
-//   const cartStr = collections.getText(consts.cartCollection, cartId);
-//   return cartStr ? deserializeCart(cartId, cartStr) : new Cart(cartId);
-// }
-
-// export function deleteCart(cartId: string): string {
-//   const result = collections.remove(consts.cartCollection, cartId);
-//   return result.isSuccessful ? "success" : result.error;
-// }
