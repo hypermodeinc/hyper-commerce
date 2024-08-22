@@ -8,16 +8,17 @@ export function EditItemQuantityButton({
   item,
   type,
 }: {
-  item: CartItem;
+  item: any;
   type: "plus" | "minus";
 }) {
+  console.log(item);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (type === "plus") {
-      await addToCart(item.id);
+      await addToCart(item.Product.id);
     } else {
-      await decreaseItemQuantity(item.id);
+      await decreaseItemQuantity(item.Product.id);
     }
   };
 

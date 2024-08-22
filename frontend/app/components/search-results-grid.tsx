@@ -1,4 +1,4 @@
-import { searchProducts } from "../actions";
+import { searchProducts } from "../../actions";
 import { ProductTile } from "./tile";
 
 export async function SearchResultsGrid({
@@ -13,7 +13,7 @@ export async function SearchResultsGrid({
   const response = await searchProducts(
     searchValue,
     parseInt(maxItems) || 9,
-    parseInt(thresholdStars) || 0,
+    parseInt(thresholdStars) || 0
   );
 
   const products = response?.data?.searchProducts?.searchObjs || [];
@@ -36,12 +36,12 @@ export async function SearchResultsGrid({
                     isStocked: string;
                   };
                 },
-                i: number,
+                i: number
               ) => (
                 <div key={i} className="h-[40vh]">
                   <ProductTile product={item?.product} />
                 </div>
-              ),
+              )
             )}
           </div>
         ) : (

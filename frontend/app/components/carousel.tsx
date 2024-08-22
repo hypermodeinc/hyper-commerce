@@ -1,5 +1,5 @@
 import { ProductTile } from "./tile";
-import { searchProducts } from "../actions";
+import { searchProducts } from "../../actions";
 import { Suspense } from "react";
 import { TileSkeleton } from "./skeletons";
 
@@ -7,7 +7,7 @@ export async function Carousel() {
   const response = await searchProducts(
     "Items in the Stuffed Animals & Plush Toys category",
     7,
-    1,
+    1
   );
 
   const products = response?.data?.searchProducts?.searchObjs || [];

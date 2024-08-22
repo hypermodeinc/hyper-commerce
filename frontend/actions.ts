@@ -177,7 +177,10 @@ export async function getCart(cartId: string) {
   }
 }
 
-export async function removeFromCart(cartId: string, productId: string) {
+export async function removeFromCart(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+
   const graphqlQuery = `
     query removeFromCart($cartId: String!, $productId: String!) {
       removeFromCart(cartId: $cartId, productId: $productId)
@@ -196,7 +199,10 @@ export async function removeFromCart(cartId: string, productId: string) {
   }
 }
 
-export async function decreaseItemQuantity(cartId: string, productId: string) {
+export async function decreaseItemQuantity(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+  console.log("test", cartId, productId);
   const graphqlQuery = `
     query decreaseQuantity($cartId: String!, $productId: String!) {
       decreaseItemQuantity(cartId: $cartId, productId: $productId)
@@ -207,6 +213,7 @@ export async function decreaseItemQuantity(cartId: string, productId: string) {
     query: graphqlQuery,
     variables: { cartId, productId },
   });
+  console.log(data);
 
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };

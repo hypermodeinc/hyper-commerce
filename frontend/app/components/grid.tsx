@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { searchProducts } from "../actions";
+import { searchProducts } from "../../actions";
 import { TileSkeleton } from "./skeletons";
 import { ProductTile } from "./tile";
 
@@ -41,7 +41,7 @@ export async function ThreeItemGrid() {
   const response = await searchProducts(
     "Items that people of all ages would enjoy",
     3,
-    1,
+    1
   );
 
   const topThreeProducts = response?.data?.searchProducts?.searchObjs || [];
