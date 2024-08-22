@@ -1,5 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
+import { revalidateTag } from "next/cache";
+import { TAGS } from "@/lib/constants";
 
 type FetchQueryProps = {
   query: string;
@@ -38,7 +40,6 @@ export async function searchProducts(
   maxItems: number,
   thresholdStars: number
 ) {
-  console.log("Basic search", query, maxItems, thresholdStars);
   const graphqlQuery = `
 query searchProducts($query: String!, $maxItems: Int!, $thresholdStars: Float!) {
   searchProducts(query: $query, maxItems: $maxItems, thresholdStars: $thresholdStars) {
@@ -137,11 +138,11 @@ export async function addToCart(productId: string) {
     query: graphqlQuery,
     variables: { cartId, productId },
   });
-  console.log(cartId, productId);
-  console.log("addToCart", error, data);
+
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };
   } else {
+    revalidateTag(TAGS.cart);
     return { data };
   }
 }
@@ -151,6 +152,7 @@ export async function getCart(cartId: string) {
     query getCart($cartId: String!) {
       getCart(cartId: $cartId) {
         cartId
+        totalCartQuantity
         items {
           Product {
             name
@@ -196,6 +198,7 @@ export async function removeFromCart(productId: string) {
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };
   } else {
+    revalidateTag(TAGS.cart);
     return { data };
   }
 }
@@ -203,7 +206,7 @@ export async function removeFromCart(productId: string) {
 export async function decreaseItemQuantity(productId: string) {
   const cookieStore = cookies();
   let cartId = cookieStore.get("cartId")?.value;
-  console.log("test", cartId, productId);
+
   const graphqlQuery = `
     query decreaseQuantity($cartId: String!, $productId: String!) {
       decreaseQuantity(cartId: $cartId, productId: $productId)
@@ -214,11 +217,11 @@ export async function decreaseItemQuantity(productId: string) {
     query: graphqlQuery,
     variables: { cartId, productId },
   });
-  console.log(data);
 
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };
   } else {
+    revalidateTag(TAGS.cart);
     return { data };
   }
 }
