@@ -374,5 +374,9 @@ export function getCart(cartId: string): Cart {
     );
     items.push(cartItemObject);
   }
-  return new Cart(cartId, items);
+  const totalCartQuantity = items.reduce<f64>(
+    (acc, item) => acc + item.quantity,
+    0,
+  );
+  return new Cart(cartId, items, totalCartQuantity);
 }
