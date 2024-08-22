@@ -335,7 +335,11 @@ export function getCart(cartId: string): Cart {
       cartId + "_" + cartItems[i],
     );
     const product = getProduct(cartItems[i]);
-    const cartItemObject = new CartItemObject(product, parseFloat(quantity));
+    const cartItemObject = new CartItemObject(
+      product,
+      parseFloat(quantity),
+      cartItems[i],
+    );
     items.push(cartItemObject);
   }
   return new Cart(cartId, items);
