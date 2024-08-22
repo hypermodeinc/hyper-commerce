@@ -41,6 +41,7 @@ export class Cart {
   constructor(
     public cartId: string,
     public items: CartItemObject[] = [],
+    public totalQuantity: f64 = 0,
   ) {}
 }
 
