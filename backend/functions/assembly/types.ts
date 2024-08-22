@@ -48,9 +48,9 @@ export class Cart {
 @json
 export class CartItemObject {
   constructor(
+    public cartItemID: string,
     public Product: Product,
     public quantity: f64,
-    public cartItemId: string,
   ) {}
 }
 
