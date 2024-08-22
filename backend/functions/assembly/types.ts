@@ -50,6 +50,7 @@ export class CartItemObject {
   constructor(
     public Product: Product,
     public quantity: f64,
+    public cartId: f64,
   ) {}
 }
 
