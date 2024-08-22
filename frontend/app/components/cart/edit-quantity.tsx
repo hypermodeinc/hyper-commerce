@@ -1,8 +1,7 @@
 "use client";
 
 import { addToCart, decreaseItemQuantity } from "../../../actions";
-import { SubmitButton } from "./submit-button"; // Adjust import path as needed
-// import type { CartItem } from "lib/shopify/types";
+import { SubmitButton } from "./submit-button";
 
 export function EditItemQuantityButton({
   item,
@@ -16,9 +15,9 @@ export function EditItemQuantityButton({
     e.preventDefault();
 
     if (type === "plus") {
-      await addToCart(item.Product.id);
+      await addToCart(item.cartItemID);
     } else {
-      await decreaseItemQuantity(item.Product.id);
+      await decreaseItemQuantity(item.cartItemID);
     }
   };
 

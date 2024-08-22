@@ -160,6 +160,7 @@ export async function getCart(cartId: string) {
             image
           }
           quantity
+          cartItemID
         }
       }
     }
@@ -205,7 +206,7 @@ export async function decreaseItemQuantity(productId: string) {
   console.log("test", cartId, productId);
   const graphqlQuery = `
     query decreaseQuantity($cartId: String!, $productId: String!) {
-      decreaseItemQuantity(cartId: $cartId, productId: $productId)
+      decreaseQuantity(cartId: $cartId, productId: $productId)
     }
   `;
 

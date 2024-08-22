@@ -186,10 +186,6 @@ export default function CartModal({ cart }: { cart: any }) {
                           </div>
                         </a>
                         <div className="flex h-16 flex-col justify-between">
-                          {/* <Price
-                            className="flex justify-end space-y-2 text-right text-sm"
-                            amount={item.Product.cost}
-                          /> */}
                           <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-700">
                             <EditItemQuantityButton item={item} type="minus" />
                             <p className="w-6 text-center">
