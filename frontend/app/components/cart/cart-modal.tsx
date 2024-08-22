@@ -9,13 +9,9 @@ import {
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
-function Price({ amount, currencyCode, className }) {
-  return (
-    <span className={className}>
-      {currencyCode} {amount}
-    </span>
-  );
-}
+// function Price({ amount, className }) {
+//   return <span className={className}>$ {amount}</span>;
+// }
 
 function CloseCart() {
   return (
@@ -70,8 +66,10 @@ function EditItemQuantityButton({ item, type }) {
   );
 }
 
-export default function CartModal() {
-  const cart = {
+export default function CartModal({ cart }: { cart: any }) {
+  console.log(cart);
+  const cartItems = cart.data.getCart.items;
+  const cartTest = {
     totalQuantity: 3,
     lines: [
       {
@@ -119,23 +117,23 @@ export default function CartModal() {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart.totalQuantity);
+  // const quantityRef = useRef(cartTest.totalQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
-  useEffect(() => {
-    if (cart.totalQuantity !== quantityRef.current) {
-      if (!isOpen) {
-        setIsOpen(true);
-      }
-      quantityRef.current = cart.totalQuantity;
-    }
-  }, [isOpen, cart.totalQuantity, quantityRef]);
+  // useEffect(() => {
+  //   if (cartItems.totalQuantity !== quantityRef.current) {
+  //     if (!isOpen) {
+  //       setIsOpen(true);
+  //     }
+  //     quantityRef.current = cartTest.totalQuantity;
+  //   }
+  // }, [isOpen, cartTest.totalQuantity, quantityRef]);
 
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={cart.totalQuantity} />
+        <OpenCart quantity={1} />
       </button>
       {isOpen && (
         <div className="relative z-50">
@@ -147,7 +145,7 @@ export default function CartModal() {
                 <CloseCart />
               </button>
             </div>
-            {cart.lines.length === 0 ? (
+            {cartItems.length === 0 ? (
               <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                 <span className="h-16">🛒</span>
                 <p className="mt-6 text-center text-2xl font-bold">
@@ -157,7 +155,7 @@ export default function CartModal() {
             ) : (
               <div className="flex h-full flex-col justify-between overflow-hidden p-1">
                 <ul className="flex-grow overflow-auto py-4">
-                  {cart.lines.map((item, i) => (
+                  {cartItems.map((item, i) => (
                     <li
                       key={i}
                       className="flex w-full flex-col border-b border-neutral-700"
@@ -176,30 +174,21 @@ export default function CartModal() {
                               className="h-full w-full object-cover"
                               width={64}
                               height={64}
-                              alt={
-                                item.merchandise.product.featuredImage
-                                  .altText || item.merchandise.product.title
-                              }
-                              src={item.merchandise.product.featuredImage.url}
+                              alt={item.Product.name}
+                              src={item.Product.image}
                             />
                           </div>
                           <div className="flex flex-1 flex-col text-base">
                             <span className="leading-tight">
-                              {item.merchandise.product.title}
+                              {item.Product.name}
                             </span>
-                            {item.merchandise.title !== "Default Option" && (
-                              <p className="text-sm text-neutral-300">
-                                {item.merchandise.title}
-                              </p>
-                            )}
                           </div>
                         </a>
                         <div className="flex h-16 flex-col justify-between">
-                          <Price
+                          {/* <Price
                             className="flex justify-end space-y-2 text-right text-sm"
-                            amount={item.cost.totalAmount.amount}
-                            currencyCode={item.cost.totalAmount.currencyCode}
-                          />
+                            amount={item.Product.cost}
+                          /> */}
                           <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-700">
                             <EditItemQuantityButton item={item} type="minus" />
                             <p className="w-6 text-center">
@@ -214,13 +203,13 @@ export default function CartModal() {
                     </li>
                   ))}
                 </ul>
-                <div className="py-4 text-sm text-neutral-300">
+                {/* <div className="py-4 text-sm text-neutral-300">
                   <div className="mb-3 flex items-center justify-between border-b border-neutral-700 pb-1">
                     <p>Taxes</p>
                     <Price
                       className="text-right text-base text-white"
-                      amount={cart.cost.totalTaxAmount.amount}
-                      currencyCode={cart.cost.totalTaxAmount.currencyCode}
+                      amount={cartTest.cost.totalTaxAmount.amount}
+                      currencyCode={cartTest.cost.totalTaxAmount.currencyCode}
                     />
                   </div>
                   <div className="mb-3 flex items-center justify-between border-b border-neutral-700 pb-1 pt-1">
@@ -231,15 +220,12 @@ export default function CartModal() {
                     <p>Total</p>
                     <Price
                       className="text-right text-base text-white"
-                      amount={cart.cost.totalAmount.amount}
-                      currencyCode={cart.cost.totalAmount.currencyCode}
+                      amount={cartTest.cost.totalAmount.amount}
+                      currencyCode={cartTest.cost.totalAmount.currencyCode}
                     />
                   </div>
-                </div>
-                <a
-                  href={cart.checkoutUrl}
-                  className="block w-full rounded-full bg-indigo-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
-                >
+                </div> */}
+                <a className="block w-full rounded-full bg-indigo-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100">
                   Proceed to Checkout
                 </a>
               </div>

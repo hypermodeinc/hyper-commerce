@@ -1,10 +1,12 @@
-import { getProduct } from "../actions";
+import { getProduct, addToCart } from "../../actions";
 import Image from "next/image";
 import StarRating from "./product-rating";
+import { SubmitButton } from "./submit-button";
 
 export async function ProductDetails({ id }: { id: string }) {
   const response = await getProduct(id);
   const product = response?.data?.getProduct;
+
   return (
     <div className="rounded-lg bg-black border border-stone-700 p-6 w-full h-full flex flex-col md:flex-row">
       <div className="md:w-3/5 rounded-md bg-white flex items-center justify-center relative h-[40vh] md:h-[90vh] md:h-auto mb-2 md:mb-0">
@@ -36,12 +38,7 @@ export async function ProductDetails({ id }: { id: string }) {
           )}
         </div>
         <div className="mb-8 text-white/70">{product?.description}</div>
-        <button
-          disabled={true}
-          className="cursor-not-allowed opacity-60 w-full bg-indigo-500 p-2 rounded-full uppercase font-semibold"
-        >
-          Add to cart
-        </button>
+        <SubmitButton id={id} />
       </div>
     </div>
   );

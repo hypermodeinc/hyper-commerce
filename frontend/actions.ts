@@ -1,4 +1,5 @@
 "use server";
+import { cookies } from "next/headers";
 
 type FetchQueryProps = {
   query: string;
@@ -110,6 +111,82 @@ export async function generateSearchObjectFromLLM(text: string) {
   const { error, data } = await fetchQuery({
     query: graphqlQuery,
     variables: { text },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}
+
+export async function addToCart(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+  if (!cartId) {
+    const cartId = Math.random().toString(36).substring(2, 15);
+    cookies().set("cartId", cartId);
+  }
+  const graphqlQuery = `
+    query addToCart($cartId: String!, $productId: String!) {
+      addToCart(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
+  });
+  console.log(cartId, productId);
+  console.log("addToCart", error, data);
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}
+
+export async function getCart(cartId: string) {
+  const graphqlQuery = `
+    query getCart($cartId: String!) {
+      getCart(cartId: $cartId) {
+        cartId
+        items {
+          Product {
+            name
+            description
+            stars
+            price
+            image
+          }
+          quantity
+        }
+      }
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}
+
+export async function removeFromCart(cartId: string, productId: string) {
+  const graphqlQuery = `
+    query removeFromCart($cartId: String!, $productId: String!) {
+      removeFromCart(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
   });
 
   if (error) {
