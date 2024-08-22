@@ -218,7 +218,6 @@ export async function decreaseItemQuantity(productId: string) {
     query: graphqlQuery,
     variables: { cartId, productId },
   });
-  console.log(data);
 
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };
