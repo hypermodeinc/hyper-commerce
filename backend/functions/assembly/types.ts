@@ -51,6 +51,7 @@ export class CartItemObject {
     public Product: Product,
     public quantity: f64,
     public productId: string,
+    public cartId: string,
   ) {}
 }
 

@@ -370,6 +370,7 @@ export function getCart(cartId: string): Cart {
       product,
       parseFloat(quantity),
       cartItems[i],
+      cartId,
     );
     items.push(cartItemObject);
   }
