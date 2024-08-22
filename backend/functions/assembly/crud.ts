@@ -314,37 +314,6 @@ export function addToCart(cartId: string, productId: string): string {
   return "success";
 }
 
-export function decreaseQuantity(cartId: string, productId: string): string {
-  const cartItemId = cartId + "_" + productId;
-  const cartItemQuantity = collections.getText(
-    consts.cartItemsCollection,
-    cartItemId,
-  );
-
-  if (cartItemQuantity === null || cartItemQuantity === "") {
-    console.log("Failed to retrieve cart item quantity for:");
-    return "error";
-  }
-
-  const newQuantity = parseFloat(cartItemQuantity) - 1;
-  if (newQuantity === 0) {
-    return removeFromCart(cartId, productId);
-  }
-
-  const upsertQuantityResult = collections.upsert(
-    consts.cartItemsCollection,
-    cartItemId,
-    newQuantity.toString(),
-  );
-
-  if (!upsertQuantityResult.isSuccessful) {
-    console.log("Failed to update quantity:");
-    return upsertQuantityResult.error;
-  }
-
-  return "success";
-}
-
 export function removeFromCart(cartId: string, productId: string): string {
   const cartItemId = cartId + "_" + productId;
   const result = collections.remove(consts.cartItemsCollection, cartItemId);
@@ -361,12 +330,14 @@ export function getCart(cartId: string): Cart {
   const cartItems = cartItemIds.split(",");
   const items = new Array<CartItemObject>();
   for (let i = 0; i < cartItems.length; i++) {
+    const cartItemID = cartItems[i];
     const quantity = collections.getText(
       consts.cartItemsCollection,
-      cartId + "_" + cartItems[i],
+      cartId + "_" + cartItemID,
     );
-    const product = getProduct(cartItems[i]);
+    const product = getProduct(cartItemID);
     const cartItemObject = new CartItemObject(
+      cartItemID,
       product,
       parseFloat(quantity),
       cartItems[i],
