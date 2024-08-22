@@ -10,7 +10,6 @@ export function EditItemQuantityButton({
   item: any;
   type: "plus" | "minus";
 }) {
-  console.log(item);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

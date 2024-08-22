@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  MinusIcon,
-  PlusIcon,
-  ShoppingCartIcon,
-  XMarkIcon,
-} from "@heroicons/react/16/solid";
+import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { EditItemQuantityButton } from "./edit-quantity";
-function Price({ amount }: { amount: number }) {
-  return <span className="">$ {amount}</span>;
+
+function Price({ amount, className }: { amount: number; className: string }) {
+  return <span className={className}>$ {amount}</span>;
 }
 
 function CloseCart() {
