@@ -1,5 +1,5 @@
 import { collections } from "@hypermode/functions-as";
-import { Product, consts } from "./types";
+import { Product, Cart, CartItemObject, consts } from "./types";
 
 export function upsertProduct(
   id: string,
@@ -230,4 +230,113 @@ export function getProducts(ids: string[]): Product[] {
     products.push(getProduct(ids[i]));
   }
   return products;
+}
+
+export function upsertCart(cartId: string, cartItemIds: string): string {
+  const result = collections.upsert(
+    consts.cartsCollection,
+    cartId,
+    cartItemIds,
+  );
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return cartId;
+}
+
+function upsertCartQuantity(cartItemId: string, quantity: f64): string {
+  const result = collections.upsert(
+    consts.cartItemsCollection,
+    cartItemId,
+    quantity.toString(),
+  );
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return cartItemId;
+}
+
+export function addToCart(cartId: string, productId: string): string {
+  const cart = collections.getText(consts.cartsCollection, cartId);
+  const cartItemId = cartId + "_" + productId;
+
+  if (cart === null || cart === "") {
+    const upsertResult = upsertCart(cartId, productId);
+    if (upsertResult !== cartId) {
+      console.log("Failed to create new cart:");
+      return upsertResult;
+    }
+
+    const quantityResult = upsertCartQuantity(cartItemId, 1);
+    if (quantityResult !== cartItemId) {
+      console.log("Failed to set initial quantity:");
+      return quantityResult;
+    }
+  } else {
+    const cartItems = cart.split(",");
+    if (cartItems.includes(productId)) {
+      const cartItemQuantity = collections.getText(
+        consts.cartItemsCollection,
+        cartItemId,
+      );
+
+      if (cartItemQuantity === null || cartItemQuantity === "") {
+        console.log("Failed to retrieve cart item quantity for:");
+        return "error";
+      }
+
+      const newQuantity = parseFloat(cartItemQuantity) + 1;
+      const upsertQuantityResult = collections.upsert(
+        consts.cartItemsCollection,
+        cartItemId,
+        newQuantity.toString(),
+      );
+
+      if (!upsertQuantityResult.isSuccessful) {
+        console.log("Failed to update quantity:");
+        return upsertQuantityResult.error;
+      }
+    } else {
+      const upsertResult = upsertCart(cartId, cart + "," + productId);
+      if (upsertResult !== cartId) {
+        console.log("Failed to update cart with new product:");
+        return upsertResult;
+      }
+
+      const quantityResult = upsertCartQuantity(cartItemId, 1);
+      if (quantityResult !== cartItemId) {
+        console.log("Failed to add new product quantity:");
+        return quantityResult;
+      }
+    }
+  }
+
+  return "success";
+}
+
+export function removeFromCart(cartId: string, productId: string): string {
+  const cartItemId = cartId + "_" + productId;
+  const result = collections.remove(consts.cartItemsCollection, cartItemId);
+  if (!result.isSuccessful) {
+    return result.error;
+  }
+  return "success";
+}
+export function getCart(cartId: string): Cart {
+  const cartItemIds = collections.getText(consts.cartsCollection, cartId);
+  if (cartItemIds === "") {
+    return new Cart(cartId, []);
+  }
+  const cartItems = cartItemIds.split(",");
+  const items = new Array<CartItemObject>();
+  for (let i = 0; i < cartItems.length; i++) {
+    const quantity = collections.getText(
+      consts.cartItemsCollection,
+      cartId + "_" + cartItems[i],
+    );
+    const product = getProduct(cartItems[i]);
+    const cartItemObject = new CartItemObject(product, parseFloat(quantity));
+    items.push(cartItemObject);
+  }
+  return new Cart(cartId, items);
 }
