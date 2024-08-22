@@ -195,3 +195,22 @@ export async function removeFromCart(cartId: string, productId: string) {
     return { data };
   }
 }
+
+export async function decreaseItemQuantity(cartId: string, productId: string) {
+  const graphqlQuery = `
+    query decreaseQuantity($cartId: String!, $productId: String!) {
+      decreaseItemQuantity(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}

@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-
+import { EditItemQuantityButton } from "./edit-quantity";
 // function Price({ amount, className }) {
 //   return <span className={className}>$ {amount}</span>;
 // }
@@ -46,25 +46,26 @@ function DeleteItemButton({ item }) {
   );
 }
 
-function EditItemQuantityButton({ item, type }) {
-  return (
-    <button
-      type="submit"
-      className={clsx(
-        "ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80",
-        {
-          "ml-auto": type === "minus",
-        }
-      )}
-    >
-      {type === "plus" ? (
-        <PlusIcon className="h-4 w-4 dark:text-neutral-500" />
-      ) : (
-        <MinusIcon className="h-4 w-4 dark:text-neutral-500" />
-      )}
-    </button>
-  );
-}
+// function EditItemQuantityButton({ item, type }) {
+//   return (
+//     <button
+//       type="submit"
+
+//       className={clsx(
+//         "ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80",
+//         {
+//           "ml-auto": type === "minus",
+//         }
+//       )}
+//     >
+//       {type === "plus" ? (
+//         <PlusIcon className="h-4 w-4 dark:text-neutral-500" />
+//       ) : (
+//         <MinusIcon className="h-4 w-4 dark:text-neutral-500" />
+//       )}
+//     </button>
+//   );
+// }
 
 export default function CartModal({ cart }: { cart: any }) {
   console.log(cart);
