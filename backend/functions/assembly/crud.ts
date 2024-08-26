@@ -261,7 +261,7 @@ export function addToCart(cartId: string, productId: string): string {
   const cartItemId = cartId + "_" + productId;
 
   if (cart === null || cart === "") {
-    const upsertResult = upsertCart(cartId, cartItemId);
+    const upsertResult = upsertCart(cartId, productId);
     if (upsertResult !== cartId) {
       console.log("Failed to create new cart:");
       return upsertResult;
