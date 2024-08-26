@@ -125,7 +125,7 @@ export async function addToCart(productId: string) {
   const cookieStore = cookies();
   let cartId = cookieStore.get("cartId")?.value;
   if (!cartId) {
-    const cartId = Math.random().toString(36).substring(2, 15);
+    cartId = Math.random().toString(36).substring(2, 15);
     cookies().set("cartId", cartId);
   }
   const graphqlQuery = `
