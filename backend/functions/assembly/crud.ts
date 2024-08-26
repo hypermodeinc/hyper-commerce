@@ -257,52 +257,57 @@ function upsertCartQuantity(cartItemId: string, quantity: f64): string {
 }
 
 export function addToCart(cartId: string, productId: string): string {
+  const cart = collections.getText(consts.cartsCollection, cartId);
   const cartItemId = cartId + "_" + productId;
 
-  let cart = collections.getText(consts.cartsCollection, cartId);
   if (cart === null || cart === "") {
-    const upsertResult = upsertCart(cartId, productId);
+    const upsertResult = upsertCart(cartId, cartItemId);
     if (upsertResult !== cartId) {
       console.log("Failed to create new cart:");
-      return upsertResult;
-    }
-    cart = productId;
-  }
-
-  const cartItems = cart.split(",");
-  if (cartItems.includes(productId)) {
-    const cartItemQuantity = collections.getText(
-      consts.cartItemsCollection,
-      cartItemId,
-    );
-
-    if (cartItemQuantity === null || cartItemQuantity === "") {
-      console.log("Failed to retrieve cart item quantity for:");
-      return "error";
-    }
-
-    const newQuantity = parseFloat(cartItemQuantity) + 1;
-    const upsertQuantityResult = collections.upsert(
-      consts.cartItemsCollection,
-      cartItemId,
-      newQuantity.toString(),
-    );
-
-    if (!upsertQuantityResult.isSuccessful) {
-      console.log("Failed to update quantity:");
-      return upsertQuantityResult.error;
-    }
-  } else {
-    const upsertResult = upsertCart(cartId, cart + "," + productId);
-    if (upsertResult !== cartId) {
-      console.log("Failed to update cart with new product:");
       return upsertResult;
     }
 
     const quantityResult = upsertCartQuantity(cartItemId, 1);
     if (quantityResult !== cartItemId) {
-      console.log("Failed to add new product quantity:");
+      console.log("Failed to set initial quantity:");
       return quantityResult;
+    }
+  } else {
+    const cartItems = cart.split(",");
+    if (cartItems.includes(productId)) {
+      const cartItemQuantity = collections.getText(
+        consts.cartItemsCollection,
+        cartItemId,
+      );
+
+      if (cartItemQuantity === null || cartItemQuantity === "") {
+        console.log("Failed to retrieve cart item quantity for:");
+        return "error";
+      }
+
+      const newQuantity = parseFloat(cartItemQuantity) + 1;
+      const upsertQuantityResult = collections.upsert(
+        consts.cartItemsCollection,
+        cartItemId,
+        newQuantity.toString(),
+      );
+
+      if (!upsertQuantityResult.isSuccessful) {
+        console.log("Failed to update quantity:");
+        return upsertQuantityResult.error;
+      }
+    } else {
+      const upsertResult = upsertCart(cartId, cart + "," + productId);
+      if (upsertResult !== cartId) {
+        console.log("Failed to update cart with new product:");
+        return upsertResult;
+      }
+
+      const quantityResult = upsertCartQuantity(cartItemId, 1);
+      if (quantityResult !== cartItemId) {
+        console.log("Failed to add new product quantity:");
+        return quantityResult;
+      }
     }
   }
 
