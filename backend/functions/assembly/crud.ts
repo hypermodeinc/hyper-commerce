@@ -347,12 +347,39 @@ export function decreaseQuantity(cartId: string, productId: string): string {
 
 export function removeFromCart(cartId: string, productId: string): string {
   const cartItemId = cartId + "_" + productId;
-  const result = collections.remove(consts.cartItemsCollection, cartItemId);
+
+  let result = collections.remove(consts.cartItemsCollection, cartItemId);
   if (!result.isSuccessful) {
     return result.error;
   }
+
+  const cart = collections.getText(consts.cartsCollection, cartId);
+  if (cart === null || cart === "") {
+    return "Cart not found";
+  }
+
+  let cartItems = cart.split(",");
+  cartItems = cartItems.filter((item) => item !== productId);
+
+  if (cartItems.length > 0) {
+    result = collections.upsert(
+      consts.cartsCollection,
+      cartId,
+      cartItems.join(","),
+    );
+    if (!result.isSuccessful) {
+      return result.error;
+    }
+  } else {
+    result = collections.remove(consts.cartsCollection, cartId);
+    if (!result.isSuccessful) {
+      return result.error;
+    }
+  }
+
   return "success";
 }
+
 export function getCart(cartId: string): Cart {
   const cartItemIds = collections.getText(consts.cartsCollection, cartId);
   if (cartItemIds === "") {
