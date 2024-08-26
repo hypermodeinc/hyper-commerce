@@ -43,25 +43,25 @@ function DeleteItemButton({ item }: { item: any }) {
 }
 
 export default function CartModal({ cart }: { cart: any }) {
-  const cartItems = cart.data.getCart.items;
+  const cartItems = cart?.data?.getCart?.items;
 
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart.data.getCart.totalCartQuantity);
+  const quantityRef = useRef(cart?.data?.getCart?.totalCartQuantity);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
   useEffect(() => {
-    if (cart.data.getCart.totalCartQuantity !== quantityRef.current) {
+    if (cart?.data?.getCart?.totalCartQuantity !== quantityRef.current) {
       if (!isOpen) {
         setIsOpen(true);
       }
-      quantityRef.current = cart.data.getCart.totalCartQuantity;
+      quantityRef.current = cart?.data?.getCart?.totalCartQuantity;
     }
-  }, [isOpen, cart.data.getCart.totalCartQuantity, quantityRef]);
+  }, [isOpen, cart?.data?.getCart?.totalCartQuantity, quantityRef]);
 
   return (
     <>
       <button aria-label="Open cart" onClick={openCart}>
-        <OpenCart quantity={cart.data.getCart.totalCartQuantity} />
+        <OpenCart quantity={cart?.data?.getCart?.totalCartQuantity || 0} />
       </button>
       {isOpen && (
         <div className="relative z-50">
@@ -73,7 +73,7 @@ export default function CartModal({ cart }: { cart: any }) {
                 <CloseCart />
               </button>
             </div>
-            {cartItems.length === 0 ? (
+            {!cartItems || cartItems.length === 0 ? (
               <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                 <span className="h-16">🛒</span>
                 <p className="mt-6 text-center text-2xl font-bold">
