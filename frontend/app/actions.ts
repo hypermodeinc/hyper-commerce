@@ -119,3 +119,107 @@ export async function generateSearchObjectFromLLM(text: string) {
     return { data };
   }
 }
+
+export async function addToCart(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+  if (!cartId) {
+    cartId = Math.random().toString(36).substring(2, 15);
+    cookies().set("cartId", cartId);
+  }
+  const graphqlQuery = `
+    query addToCart($cartId: String!, $productId: String!) {
+      addToCart(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    revalidateTag(TAGS.cart);
+    return { data };
+  }
+}
+
+export async function getCart(cartId: string) {
+  const graphqlQuery = `
+    query getCart($cartId: String!) {
+      getCart(cartId: $cartId) {
+        cartId
+        totalCartQuantity
+        items {
+          Product {
+            name
+            description
+            stars
+            price
+            image
+          }
+          quantity
+          cartItemID
+        }
+      }
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}
+
+export async function removeFromCart(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+
+  const graphqlQuery = `
+    query removeFromCart($cartId: String!, $productId: String!) {
+      removeFromCart(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    revalidateTag(TAGS.cart);
+    return { data };
+  }
+}
+
+export async function decreaseItemQuantity(productId: string) {
+  const cookieStore = cookies();
+  let cartId = cookieStore.get("cartId")?.value;
+  const graphqlQuery = `
+    query decreaseQuantity($cartId: String!, $productId: String!) {
+      decreaseQuantity(cartId: $cartId, productId: $productId)
+    }
+  `;
+
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, productId },
+  });
+
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    revalidateTag(TAGS.cart);
+    return { data };
+  }
+}
