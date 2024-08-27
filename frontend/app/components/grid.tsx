@@ -42,6 +42,7 @@ export async function ThreeItemGrid() {
     "Items that people of all ages would enjoy",
     3,
     1,
+    true
   );
 
   const topThreeProducts = response?.data?.searchProducts?.searchObjs || [];

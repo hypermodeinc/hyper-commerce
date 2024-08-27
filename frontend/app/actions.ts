@@ -35,12 +35,12 @@ const fetchQuery = async ({ query, variables }: FetchQueryProps) => {
 export async function searchProducts(
   query: string,
   maxItems: number,
-  thresholdStars: number
+  thresholdStars: number,
+  inStockOnly: boolean = false
 ) {
-  console.log("Basic search", query, maxItems, thresholdStars);
   const graphqlQuery = `
-query searchProducts($query: String!, $maxItems: Int!, $thresholdStars: Float!) {
-  searchProducts(query: $query, maxItems: $maxItems, thresholdStars: $thresholdStars) {
+query searchProducts($query: String!, $maxItems: Int!, $thresholdStars: Float!, $inStockOnly: Boolean!) {
+  searchProducts(query: $query, maxItems: $maxItems, thresholdStars: $thresholdStars, inStockOnly: $inStockOnly) {
   searchObjs {
     product {
       name
@@ -63,6 +63,7 @@ query searchProducts($query: String!, $maxItems: Int!, $thresholdStars: Float!) 
       query,
       maxItems,
       thresholdStars,
+      inStockOnly,
     },
   });
 

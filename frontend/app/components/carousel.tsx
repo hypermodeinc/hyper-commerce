@@ -4,11 +4,7 @@ import { Suspense } from "react";
 import { TileSkeleton } from "./skeletons";
 
 export async function Carousel() {
-  const response = await searchProducts(
-    "Items in the Stuffed Animals & Plush Toys category",
-    7,
-    1,
-  );
+  const response = await searchProducts("Top rated toys", 15, 1, true);
 
   const products = response?.data?.searchProducts?.searchObjs || [];
   // Purposefully duplicating products to make the carousel loop and not run out of products on wide screens.
