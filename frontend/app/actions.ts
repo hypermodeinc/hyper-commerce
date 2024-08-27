@@ -1,7 +1,7 @@
 "use server";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { TAGS } from "next/constants";
+import { TAGS } from "@/lib/constants";
 
 type FetchQueryProps = {
   query: string;
