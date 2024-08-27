@@ -24,7 +24,7 @@ function OpenCart({ quantity }: { quantity: number }) {
     <div className="relative flex h-11 w-11 items-center justify-center rounded-md border transition-colors border-neutral-700 text-white">
       <ShoppingCartIcon className="h-4 transition-all ease-in-out hover:scale-110" />
       <div className="flex items-center justify-center flex-none font-bold absolute top-0 bg-indigo-500 text-black w-5 h-5 rounded-full -mt-2 right-0 -mr-2 text-xs text-white">
-        {quantity > 0 && <span>{quantity}</span>}
+        {<span>{quantity}</span>}
       </div>
     </div>
   );
