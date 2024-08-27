@@ -357,7 +357,7 @@ export function removeFromCart(cartId: string, productId: string): string {
 
   // Manually filter out the cartItemId
   for (let i = 0; i < cartItems.length; i++) {
-    if (cartItems[i] !== cartItemId) {
+    if (cartItems[i] !== productId) {
       newCartItems.push(cartItems[i]);
     }
   }
