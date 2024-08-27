@@ -375,19 +375,22 @@ export function getCart(cartId: string): Cart {
   const cartItems = cartItemIds.split(",");
   const items = new Array<CartItemObject>();
   for (let i = 0; i < cartItems.length; i++) {
+    const cartItemID = cartItems[i];
     const quantity = collections.getText(
       consts.cartItemsCollection,
-      cartId + "_" + cartItems[i],
+      cartId + "_" + cartItemID,
     );
-    const product = getProduct(cartItems[i]);
+    const product = getProduct(cartItemID);
     const cartItemObject = new CartItemObject(
-      cartId,
+      cartItemID,
       product,
       parseFloat(quantity),
-      cartItems[i],
-      cartId,
     );
     items.push(cartItemObject);
   }
-  return new Cart(cartId, items);
+  const totalCartQuantity = items.reduce<f64>(
+    (acc, item) => acc + item.quantity,
+    0,
+  );
+  return new Cart(cartId, items, totalCartQuantity);
 }
