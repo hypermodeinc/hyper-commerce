@@ -260,8 +260,7 @@ export function addToCart(cartId: string, productId: string): string {
   const cart = collections.getText(consts.cartsCollection, cartId);
   const cartItemId = cartId + "_" + productId;
 
-  if (cart === null || cart === "" || cart.trim() === "") {
-    // If the cart is null or empty, create a new cart with the product
+  if (cart === null || cart === "") {
     const upsertResult = upsertCart(cartId, productId);
     if (upsertResult !== cartId) {
       console.log("Failed to create new cart:");
@@ -274,7 +273,7 @@ export function addToCart(cartId: string, productId: string): string {
       return quantityResult;
     }
   } else {
-    const cartItems = cart.split(",").filter((item) => item.trim() !== "");
+    const cartItems = cart.split(",");
     if (cartItems.includes(productId)) {
       const cartItemQuantity = collections.getText(
         consts.cartItemsCollection,
@@ -298,7 +297,8 @@ export function addToCart(cartId: string, productId: string): string {
         return upsertQuantityResult.error;
       }
     } else {
-      const upsertResult = upsertCart(cartId, cart + "," + productId);
+      const updatedCart = cart.length > 0 ? cart + "," + productId : productId;
+      const upsertResult = upsertCart(cartId, updatedCart);
       if (upsertResult !== cartId) {
         console.log("Failed to update cart with new product:");
         return upsertResult;
@@ -348,20 +348,30 @@ export function decreaseQuantity(cartId: string, productId: string): string {
 
 export function removeFromCart(cartId: string, productId: string): string {
   const cartItemId = cartId + "_" + productId;
+  const cart = collections.getText(consts.cartsCollection, cartId);
+  if (cart === null || cart === "") {
+    return "Cart not found";
+  }
+  const cartItems = cart.split(",");
+
+  const newCartItems: string[] = [];
+
+  // Manually filter out the cartItemId
+  for (let i = 0; i < cartItems.length; i++) {
+    if (cartItems[i] !== productId) {
+      newCartItems.push(cartItems[i]);
+    }
+  }
+  const newCart = newCartItems.join(",");
+
   const result = collections.remove(consts.cartItemsCollection, cartItemId);
   if (!result.isSuccessful) {
     return result.error;
   }
 
-  // Check if the cart is now empty
-  const cart = collections.getText(consts.cartsCollection, cartId);
-  const cartItems = cart.split(",").filter((item) => item !== productId);
-  if (cartItems.length === 0) {
-    // Optionally remove the cart if it's empty
-    collections.remove(consts.cartsCollection, cartId);
-  } else {
-    // Update the cart to remove the product ID
-    collections.upsert(consts.cartsCollection, cartId, cartItems.join(","));
+  const cartRes = collections.upsert(consts.cartsCollection, cartId, newCart);
+  if (!cartRes.isSuccessful) {
+    return cartRes.error;
   }
 
   return "success";
