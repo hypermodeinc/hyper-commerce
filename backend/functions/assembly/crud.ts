@@ -297,7 +297,8 @@ export function addToCart(cartId: string, productId: string): string {
         return upsertQuantityResult.error;
       }
     } else {
-      const upsertResult = upsertCart(cartId, cart + "," + productId);
+      const updatedCart = cart.length > 0 ? cart + "," + productId : productId;
+      const upsertResult = upsertCart(cartId, updatedCart);
       if (upsertResult !== cartId) {
         console.log("Failed to update cart with new product:");
         return upsertResult;
