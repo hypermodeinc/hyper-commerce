@@ -1,4 +1,4 @@
-import { getCart } from "../../../actions";
+import { getCart } from "../../actions";
 import { cookies } from "next/headers";
 import CartModal from "./cart-modal";
 

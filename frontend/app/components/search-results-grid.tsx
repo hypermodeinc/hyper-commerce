@@ -1,4 +1,4 @@
-import { searchProducts } from "../../actions";
+import { searchProducts } from "../actions";
 import { ProductTile } from "./tile";
 
 export async function SearchResultsGrid({

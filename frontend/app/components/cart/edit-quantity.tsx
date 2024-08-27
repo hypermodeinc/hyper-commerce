@@ -1,6 +1,6 @@
 "use client";
 
-import { addToCart, decreaseItemQuantity } from "../../../actions";
+import { addToCart, decreaseItemQuantity } from "../../actions";
 import { SubmitButton } from "./submit-button";
 
 export function EditItemQuantityButton({

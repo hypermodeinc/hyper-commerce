@@ -1,4 +1,4 @@
-import { getProduct, addToCart } from "../../actions";
+import { getProduct, addToCart } from "../actions";
 import Image from "next/image";
 import StarRating from "./product-rating";
 import { SubmitButton } from "./submit-button";

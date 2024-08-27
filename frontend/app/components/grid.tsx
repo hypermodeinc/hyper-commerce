@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { searchProducts } from "../../actions";
+import { searchProducts } from "../actions";
 import { TileSkeleton } from "./skeletons";
 import { ProductTile } from "./tile";
 

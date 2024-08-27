@@ -1,5 +1,5 @@
 "use client";
-import { addToCart, getCart } from "../../actions";
+import { addToCart, getCart } from "../actions";
 
 export function SubmitButton({ id }: { id: string }) {
   const handleSubmit = (event: React.FormEvent) => {
