@@ -8,6 +8,7 @@ export function searchProducts(
   query: string,
   maxItems: i32,
   thresholdStars: f32 = 0.0,
+  inStockOnly: boolean = false,
 ): ProductSearchResult {
   const productSearchRes = new ProductSearchResult(
     consts.productNameCollection,
@@ -29,6 +30,20 @@ export function searchProducts(
     productSearchRes.error = semanticSearchRes.error;
 
     return productSearchRes;
+  }
+
+  if (inStockOnly) {
+    for (let i = 0; i < semanticSearchRes.objects.length; i++) {
+      const inStockRes = collections.getText(
+        consts.isProductStockedCollection,
+        semanticSearchRes.objects[i].key,
+      );
+      const inStock = inStockRes === "true";
+      if (!inStock) {
+        semanticSearchRes.objects.splice(i, 1);
+        i--;
+      }
+    }
   }
 
   const rankedResults = reRankAndFilterSearchResultObjects(
@@ -72,7 +87,6 @@ function reRankAndFilterSearchResultObjects(
       objs[i].key,
     );
     const inStock = inStockRes === "true";
-
     if (!inStock) {
       objs[i].score *= 0.5;
     }
