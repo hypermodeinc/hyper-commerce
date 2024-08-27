@@ -261,7 +261,6 @@ export function addToCart(cartId: string, productId: string): string {
   const cartItemId = cartId + "_" + productId;
 
   if (cart === null || cart === "") {
-    // If cart does not exist or is empty, create a new cart with the product
     const upsertResult = upsertCart(cartId, productId);
     if (upsertResult !== cartId) {
       console.log("Failed to create new cart:");
@@ -274,10 +273,17 @@ export function addToCart(cartId: string, productId: string): string {
       return quantityResult;
     }
   } else {
-    const cartItems = cart.split(",").filter((item) => item.trim() !== "");
+    const cartItems = cart.split(",");
+    let isProductInCart = false;
 
-    if (cartItems.includes(productId)) {
-      // If product is already in the cart, increase the quantity
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i] === productId) {
+        isProductInCart = true;
+        break;
+      }
+    }
+
+    if (isProductInCart) {
       const cartItemQuantity = collections.getText(
         consts.cartItemsCollection,
         cartItemId,
@@ -300,8 +306,7 @@ export function addToCart(cartId: string, productId: string): string {
         return upsertQuantityResult.error;
       }
     } else {
-      // Add the new product to the existing cart
-      const updatedCart = cart.length > 0 ? cart + "," + productId : productId;
+      const updatedCart = cart + "," + productId;
       const upsertResult = upsertCart(cartId, updatedCart);
       if (upsertResult !== cartId) {
         console.log("Failed to update cart with new product:");
@@ -357,16 +362,34 @@ export function removeFromCart(cartId: string, productId: string): string {
     return result.error;
   }
 
-  // Fetch the current cart and update it
   const cart = collections.getText(consts.cartsCollection, cartId);
-  const cartItems = cart.split(",").filter((item) => item !== productId);
+  if (cart === null || cart === "") {
+    return "Cart not found";
+  }
 
-  if (cartItems.length === 0) {
-    // If the cart is empty, remove the cart from the collection
+  const cartItems = cart.split(",");
+  let updatedCart = "";
+  let itemFound = false;
+
+  for (let i = 0; i < cartItems.length; i++) {
+    if (cartItems[i] !== productId) {
+      if (updatedCart.length > 0) {
+        updatedCart += ",";
+      }
+      updatedCart += cartItems[i];
+    } else {
+      itemFound = true;
+    }
+  }
+
+  if (!itemFound) {
+    return "Item not found in cart";
+  }
+
+  if (updatedCart === "") {
     collections.remove(consts.cartsCollection, cartId);
   } else {
-    // Update the cart with the remaining items
-    collections.upsert(consts.cartsCollection, cartId, cartItems.join(","));
+    collections.upsert(consts.cartsCollection, cartId, updatedCart);
   }
 
   return "success";
