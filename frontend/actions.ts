@@ -208,7 +208,6 @@ export async function removeFromCart(productId: string) {
 export async function decreaseItemQuantity(productId: string) {
   const cookieStore = cookies();
   let cartId = cookieStore.get("cartId")?.value;
-
   const graphqlQuery = `
     query decreaseQuantity($cartId: String!, $productId: String!) {
       decreaseQuantity(cartId: $cartId, productId: $productId)
@@ -219,6 +218,7 @@ export async function decreaseItemQuantity(productId: string) {
     query: graphqlQuery,
     variables: { cartId, productId },
   });
+  console.log(data);
 
   if (error) {
     return { error: Array.isArray(error) ? error[0] : error };
