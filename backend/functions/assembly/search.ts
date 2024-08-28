@@ -45,7 +45,7 @@ export function recommendProductByCart(
 
   const normalizedVec = normalize(sumVec);
 
-  const cartProductIds = cart.items.map((item) => item.Product.id);
+  const cartProductIds = cart.items.map<string>((item) => item.Product.id);
 
   const semanticSearchRes = collections.searchByVector(
     consts.productNameCollection,
