@@ -1,8 +1,82 @@
 import { models } from "@hypermode/functions-as";
 import { EmbeddingsModel } from "@hypermode/models-as/models/experimental/embeddings";
 import { collections } from "@hypermode/functions-as";
-import { getProduct } from "./crud";
+import { getProduct, getCart } from "./crud";
 import { ProductSearchResult, ProductSearchObject, consts } from "./types";
+
+export function recommendProductByCart(
+  cartId: string,
+  maxItems: i32,
+): ProductSearchResult {
+  const productSearchRes = new ProductSearchResult(
+    consts.productNameCollection,
+    consts.searchMethod,
+    "success",
+    "",
+  );
+
+  const cart = getCart(cartId);
+  if (cart === null) {
+    productSearchRes.status = "error";
+    productSearchRes.error = "Cart not found";
+    return productSearchRes;
+  }
+
+  const cartVecs: f32[][] = [];
+
+  for (let i = 0; i < cart.items.length; i++) {
+    const vec = collections.getVector(
+      consts.productNameCollection,
+      consts.searchMethod,
+      cart.items[i].Product.id,
+    );
+
+    cartVecs.push(vec);
+  }
+
+  const sumVec: f32[] = [];
+
+  for (let i = 0; i < cartVecs[0].length; i++) {
+    sumVec[i] = 0;
+    for (let j = 0; j < cartVecs.length; j++) {
+      sumVec[i] += cartVecs[j][i];
+    }
+  }
+
+  const normalizedVec = normalize(sumVec);
+
+  const cartProductIds = cart.items.map((item) => item.Product.id);
+
+  const semanticSearchRes = collections.searchByVector(
+    consts.productNameCollection,
+    consts.searchMethod,
+    normalizedVec,
+    maxItems + cart.items.length,
+  );
+
+  if (!semanticSearchRes.isSuccessful) {
+    productSearchRes.status = semanticSearchRes.status;
+    productSearchRes.error = semanticSearchRes.error;
+
+    return productSearchRes;
+  }
+
+  for (let i = 0; i < semanticSearchRes.objects.length; i++) {
+    if (cartProductIds.includes(semanticSearchRes.objects[i].key)) {
+      continue;
+    }
+    const searchObj = getSearchObject(
+      semanticSearchRes.objects[i].key,
+      semanticSearchRes.objects[i].score,
+      semanticSearchRes.objects[i].distance,
+    );
+    productSearchRes.searchObjs.push(searchObj);
+  }
+
+  productSearchRes.searchObjs = productSearchRes.searchObjs.slice(0, maxItems);
+
+  return productSearchRes;
+}
 
 export function searchProducts(
   query: string,
@@ -124,4 +198,28 @@ export function miniLMEmbed(texts: string[]): f32[][] {
   const output = model.invoke(input);
 
   return output.predictions;
+}
+
+// Function to calculate the magnitude of a vector
+function magnitude(vec: f32[]): f32 {
+  let sum: f32 = 0.0;
+  for (let i = 0; i < vec.length; i++) {
+    sum += vec[i] * vec[i];
+  }
+  return f32(Math.sqrt(sum));
+}
+
+// Function to normalize a vector
+function normalize(vec: f32[]): f32[] {
+  const mag = magnitude(vec);
+  if (mag == 0) {
+    throw new Error("Cannot normalize a zero vector");
+  }
+
+  const normalizedVec: f32[] = [];
+  for (let i = 0; i < vec.length; i++) {
+    normalizedVec.push(vec[i] / mag);
+  }
+
+  return normalizedVec;
 }
