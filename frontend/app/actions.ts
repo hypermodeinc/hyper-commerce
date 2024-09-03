@@ -226,3 +226,33 @@ export async function decreaseItemQuantity(productId: string) {
     return { data };
   }
 }
+
+export async function recommendProductByCart(cartId: string, maxItems: number) {
+  const graphqlQuery = `
+    query recommendProductByCart($cartId: String!, $maxItems: Int!) {
+      recommendProductByCart(cartId: $cartId, maxItems: $maxItems) {
+        searchObjs {
+          product {
+            name
+            id
+            image
+            description
+            stars
+            price
+            isStocked
+            category
+          }
+        }
+      }
+    } 
+  `;
+  const { error, data } = await fetchQuery({
+    query: graphqlQuery,
+    variables: { cartId, maxItems },
+  });
+  if (error) {
+    return { error: Array.isArray(error) ? error[0] : error };
+  } else {
+    return { data };
+  }
+}
