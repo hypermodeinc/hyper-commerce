@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { EditItemQuantityButton } from "./edit-quantity";
 import { DeleteItemButton } from "./delete-item";
+import { RecommendedProducts } from "./RecommendedProducts";
 
 function Price({ amount, className }: { amount: number; className: string }) {
   return <span className={className}>$ {amount}</span>;
@@ -31,7 +32,13 @@ function OpenCart({ quantity }: { quantity: number }) {
   );
 }
 
-export default function CartModal({ cart }: { cart: any }) {
+export default function CartModal({
+  cart,
+  recommendedItems,
+}: {
+  cart: any;
+  recommendedItems: Array<any>;
+}) {
   const cartItems = cart?.data?.getCart?.items;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -120,6 +127,7 @@ export default function CartModal({ cart }: { cart: any }) {
                     </li>
                   ))}
                 </ul>
+                <RecommendedProducts recommendedItems={recommendedItems} />
                 <a className="block w-full rounded-full bg-indigo-500 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100">
                   Proceed to Checkout
                 </a>
