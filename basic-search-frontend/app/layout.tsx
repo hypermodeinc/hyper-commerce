@@ -3,8 +3,8 @@ import "./globals.css";
 import Header from "./header";
 
 export const metadata: Metadata = {
-  title: "Hypermode Commerce",
-  description: "An e-commerce app built with Hypermode",
+  title: "Hypermode Search",
+  description: "A simple template with real-time search using Hypermode.",
 };
 
 export default function RootLayout({

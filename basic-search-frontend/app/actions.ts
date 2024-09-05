@@ -2,7 +2,7 @@
 
 type FetchQueryProps = {
   query: string;
-  variables?: any;
+  variables?: { [key: string]: unknown };
 };
 
 const fetchQuery = async ({ query, variables }: FetchQueryProps) => {
