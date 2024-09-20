@@ -7,7 +7,7 @@ import { ReadonlyURLSearchParams } from "next/navigation";
 
 const createUrl = (
   pathname: string,
-  params: URLSearchParams | ReadonlyURLSearchParams,
+  params: URLSearchParams | ReadonlyURLSearchParams
 ) => {
   const paramsString = params?.toString();
   const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
@@ -36,14 +36,14 @@ export default function Search() {
         Search
       </label>
       <input
-        className="border-stone-700 peer block w-full rounded-md border py-[9px] pl-14 text-sm outline-2 placeholder:text-gray-500 bg-black"
+        className="focus:outline-none border-stone-700 peer block w-full rounded-md border py-[9px] pl-14 text-sm outline-2 placeholder:text-gray-500 bg-black"
         placeholder="Search"
         defaultValue={searchParams?.get("q") || ""}
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
       />
-      <MagnifyingGlassIcon className="absolute left-6 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+      <MagnifyingGlassIcon className="peer-focus:text-stone-500 absolute left-6 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
     </div>
   );
 }
