@@ -16,7 +16,7 @@ export function recommendProductByCart(
   );
 
   const cart = getCart(cartId);
-  if (cart === null) {
+  if (cart === null || cart.items.length === 0) {
     productSearchRes.status = "error";
     productSearchRes.error = "Cart not found";
     return productSearchRes;
