@@ -299,12 +299,14 @@ export function addToCart(cartId: string, productId: string): string {
         console.log("Failed to retrieve cart item quantity for:");
         return "error";
       }
-      let cartItemQuantityNumber = parseFloat(cartItemQuantity);
-      if (isNaN(cartItemQuantityNumber)) {
-        cartItemQuantityNumber = 0;
-      }
+      // let cartItemQuantityNumber = parseFloat(cartItemQuantity);
+      // if (isNaN(cartItemQuantityNumber)) {
+      //   cartItemQuantityNumber = 0;
+      // }
 
-      const newQuantity = cartItemQuantityNumber + 1;
+      // const newQuantity = cartItemQuantityNumber + 1;
+      const newQuantity = parseFloat(cartItemQuantity) + 1;
+
       const upsertQuantityResult = collections.upsert(
         consts.cartItemsCollection,
         cartItemId,
