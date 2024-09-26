@@ -423,7 +423,14 @@ export function getCart(cartId: string): Cart {
       consts.cartItemsCollection,
       cartId + "_" + cartItemID,
     );
+    if (quantity === null || quantity === "") {
+      console.log(`Failed to retrieve quantity for cartItemID: ${cartItemID}`);
+      continue;
+    }
     const product = getProduct(cartItemID);
+    if (!product) {
+      console.log(`Product not found for cartItemID: ${cartItemID}`);
+    }
     const cartItemObject = new CartItemObject(
       cartItemID,
       product,
