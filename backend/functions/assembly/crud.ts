@@ -5,10 +5,10 @@ export function upsertProduct(
   id: string,
   name: string,
   category: string,
-  price: f32,
+  price: f64,
   description: string,
   image: string,
-  stars: f32,
+  stars: f64,
   isStocked: boolean,
 ): string {
   let result = collections.upsert(consts.productNameCollection, id, name);
@@ -62,10 +62,10 @@ export function upsertProducts(
   ids: string[],
   names: string[],
   categories: string[],
-  prices: f32[],
+  prices: f64[],
   descriptions: string[],
   images: string[],
-  stars: f32[],
+  stars: f64[],
   isStockedArray: boolean[],
 ): string[] {
   const errors: string[] = [];
@@ -198,14 +198,20 @@ export function getProduct(id: string): Product {
   const name = collections.getText(consts.productNameCollection, id);
   const category = collections.getText(consts.productCategoryCollection, id);
   const priceRes = collections.getText(consts.productPriceCollection, id);
-  const price = parseFloat(priceRes);
+  let price = parseFloat(priceRes);
+  if (isNaN(price)) {
+    price = 0;
+  }
   const description = collections.getText(
     consts.productDescriptionCollection,
     id,
   );
   const image = collections.getText(consts.productImageCollection, id);
   const starRes = collections.getText(consts.productStarCollection, id);
-  const stars = parseFloat(starRes);
+  let stars = parseFloat(starRes);
+  if (isNaN(stars)) {
+    stars = 0;
+  }
   const isStockedRes = collections.getText(
     consts.isProductStockedCollection,
     id,
@@ -216,10 +222,10 @@ export function getProduct(id: string): Product {
     id,
     name,
     category,
-    f32(price),
+    price,
     description,
     image,
-    f32(stars),
+    stars,
     isStocked,
   );
 }
@@ -293,8 +299,12 @@ export function addToCart(cartId: string, productId: string): string {
         console.log("Failed to retrieve cart item quantity for:");
         return "error";
       }
+      let cartItemQuantityNumber = parseFloat(cartItemQuantity);
+      if (isNaN(cartItemQuantityNumber)) {
+        cartItemQuantityNumber = 0;
+      }
 
-      const newQuantity = parseFloat(cartItemQuantity) + 1;
+      const newQuantity = cartItemQuantityNumber + 1;
       const upsertQuantityResult = collections.upsert(
         consts.cartItemsCollection,
         cartItemId,
@@ -336,7 +346,12 @@ export function decreaseQuantity(cartId: string, productId: string): string {
     return "error";
   }
 
-  const newQuantity = parseFloat(cartItemQuantity) - 1;
+  let cartItemQuantityNumber = parseFloat(cartItemQuantity);
+  if (isNaN(cartItemQuantityNumber)) {
+    cartItemQuantityNumber = 0;
+  }
+
+  const newQuantity = cartItemQuantityNumber - 1;
   if (newQuantity === 0) {
     return removeFromCart(cartId, productId);
   }

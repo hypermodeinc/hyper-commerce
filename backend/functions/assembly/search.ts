@@ -154,7 +154,10 @@ function reRankAndFilterSearchResultObjects(
       consts.productStarCollection,
       objs[i].key,
     );
-    const stars = parseFloat(starRes);
+    let stars = parseFloat(starRes);
+    if (isNaN(stars)) {
+      stars = 0;
+    }
 
     const inStockRes = collections.getText(
       consts.isProductStockedCollection,
@@ -183,7 +186,10 @@ function reRankAndFilterSearchResultObjects(
       consts.productStarCollection,
       objs[i].key,
     );
-    const stars = parseFloat(starRes);
+    let stars = parseFloat(starRes);
+    if (isNaN(stars)) {
+      stars = 0;
+    }
     if (stars >= thresholdStars) {
       filteredResults.push(objs[i]);
     }

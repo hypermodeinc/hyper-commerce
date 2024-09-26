@@ -5,10 +5,10 @@ export class Product {
     public id: string,
     public name: string,
     public category: string,
-    public price: f32,
+    public price: f64,
     public description: string,
     public image: string,
-    public stars: f32,
+    public stars: f64,
     public isStocked: boolean,
   ) {}
 }
