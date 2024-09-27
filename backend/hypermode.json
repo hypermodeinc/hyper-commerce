@@ -6,5 +6,41 @@
       "provider": "hugging-face",
       "host": "hypermode"
     }
+  },
+  "collections": {
+    "productNames": {
+      "searchMethods": {
+        "searchMethod1": {
+          "embedder": "miniLMEmbed",
+          "index": {
+            "type": "sequential"
+          }
+        }
+      }
+    },
+    "productDescriptions": {
+      "searchMethods": {}
+    },
+    "productCategories": {
+      "searchMethods": {}
+    },
+    "productPrices": {
+      "searchMethods": {}
+    },
+    "productImages": {
+      "searchMethods": {}
+    },
+    "productStars": {
+      "searchMethods": {}
+    },
+    "isProductStocked": {
+      "searchMethods": {}
+    },
+    "carts": {
+      "searchMethods": {}
+    },
+    "cartItems": {
+      "searchMethods": {}
+    }
   }
 }
