@@ -8,7 +8,7 @@ export default function Footer() {
           </div>
           <div className="flex space-x-4">
             <a
-              href="https://github.com/hypermodeAI/hyper-commerce"
+              href="https://github.com/hypermodeinc/hyper-commerce"
               target="_blank"
               className="border border-white text-white py-2 px-4 rounded inline-flex items-center hover:opacity-80"
             >
