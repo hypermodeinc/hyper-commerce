@@ -55,13 +55,13 @@ Each function can use AI models inferences, data connections (HTTP, GraphQL, DB,
 
 For more information on functions, models, connections, collections and project configuration, consult [our documentation](https://docs.hypermode.com).
 
-For writing functions in AssemblyScript, you can refer to the [examples](https://github.com/hypermodeAI/functions-as/tree/main/examples) in [hypermodeAI/functions-as](https://github.com/hypermodeAI/functions-as).
+For writing functions in AssemblyScript, you can refer to the [examples](https://github.com/hypermodeinc/functions-as/tree/main/examples) in [hypermodeinc/functions-as](https://github.com/hypermodeinc/functions-as).
 
 ## Frontend Template
 
 ### Running Locally
 
-To run this project locally, start by setting up your environment variables. Copy the definitions from [`.env.example`](https://github.com/hypermodeAI/hyper-commerce/blob/main/frontend/.env.example) into a new file named `.env.local` at the root of your project, and provide the values from your Hypermode dashboard.
+To run this project locally, start by setting up your environment variables. Copy the definitions from [`.env.example`](https://github.com/hypermodeinc/hyper-commerce/blob/main/frontend/.env.example) into a new file named `.env.local` at the root of your project, and provide the values from your Hypermode dashboard.
 
 Once your environment variables are configured, install the necessary dependencies with:
 
@@ -79,7 +79,7 @@ Your app should be up and running at [localhost:3000](http://localhost:3000/)
 
 ### Deploy with Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FhypermodeAI%2Fhyper-commerce%2Ftree%2Fmain%2Ffrontend)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhypermodeinc%2Fhyper-commerce%2Ftree%2Fmain%2Ffrontend)
 
 _NOTES_: Make sure your environment variables are added to your Vercel project.
 
