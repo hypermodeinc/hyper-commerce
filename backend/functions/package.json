@@ -1,0 +1,35 @@
+{
+  "name": "hyper-commerce",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Hypermode Functions Sample",
+  "author": "Hypermode, Inc.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node ./node_modules/@hypermode/functions-as/bin/build-plugin.js",
+    "pretty": "prettier --write .",
+    "pretty:check": "prettier --check .",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --ext .ts --fix ."
+  },
+  "dependencies": {
+    "@hypermode/functions-as": "^0.12.0",
+    "@hypermode/models-as": "^0.2.4",
+    "json-as": "^0.9.26"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/eslint__js": "^8.42.3",
+    "assemblyscript": "^0.27.31",
+    "assemblyscript-prettier": "^3.0.1",
+    "eslint": "^9.15.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.14.0",
+    "visitor-as": "^0.11.4"
+  },
+  "overrides": {
+    "assemblyscript": "$assemblyscript"
+  }
+}
