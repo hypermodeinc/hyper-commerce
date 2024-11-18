@@ -1,4 +1,4 @@
-import { collections } from "@hypermode/functions-as";
+import { collections } from "@hypermode/modus-sdk-as";
 import { Product, Cart, CartItemObject, consts } from "./types";
 
 export function upsertProduct(

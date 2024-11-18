@@ -1,10 +1,17 @@
 {
-  "$schema": "https://manifest.hypermode.com/hypermode.json",
+  "$schema": "https://schema.hypermode.com/modus.json",
+  "endpoints": {
+    "default": {
+      "type": "graphql",
+      "path": "/graphql",
+      "auth": "bearer-token"
+    }
+  },
   "models": {
     "minilm": {
       "sourceModel": "sentence-transformers/all-MiniLM-L6-v2",
       "provider": "hugging-face",
-      "host": "hypermode"
+      "connection": "hypermode"
     }
   },
   "collections": {
