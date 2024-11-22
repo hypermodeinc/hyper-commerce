@@ -1,5 +1,5 @@
 
-name: Build and publish Modus app
+name: ci-modus-build
 
 on:
   workflow_dispatch:
