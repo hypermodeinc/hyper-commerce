@@ -5,7 +5,7 @@ import { SubmitButton } from "./submit-button";
 
 export async function ProductDetails({ id }: { id: string }) {
   const response = await getProduct(id);
-  const product = response?.data?.getProduct;
+  const product = response?.data?.product;
 
   return (
     <div className="rounded-lg bg-black border border-stone-700 p-6 w-full h-full flex flex-col md:flex-row">
