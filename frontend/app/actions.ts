@@ -80,12 +80,13 @@ query searchProducts($query: String!, $maxItems: Int!, $thresholdStars: Float!, 
 export async function getProduct(id: string) {
   const graphqlQuery = `
     query getProduct($id: String!) {
-      getProduct(id: $id) {
+      product(id: $id) {
         name
         description
         stars
         price
         image
+        isStocked
       }
     }
   `;
