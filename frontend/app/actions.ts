@@ -125,11 +125,11 @@ export async function generateSearchObjectFromLLM(text: string) {
 }
 
 export async function addToCart(productId: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   let cartId = cookieStore.get("cartId")?.value;
   if (!cartId) {
     cartId = Math.random().toString(36).substring(2, 15);
-    cookies().set("cartId", cartId);
+    (await cookies()).set("cartId", cartId);
   }
   const graphqlQuery = `
     query addToCart($cartId: String!, $productId: String!) {
@@ -184,7 +184,7 @@ export async function getCart(cartId: string) {
 }
 
 export async function removeFromCart(productId: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   let cartId = cookieStore.get("cartId")?.value;
 
   const graphqlQuery = `
@@ -207,7 +207,7 @@ export async function removeFromCart(productId: string) {
 }
 
 export async function decreaseItemQuantity(productId: string) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   let cartId = cookieStore.get("cartId")?.value;
   const graphqlQuery = `
     query decreaseQuantity($cartId: String!, $productId: String!) {
