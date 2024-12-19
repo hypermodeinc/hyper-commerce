@@ -14,15 +14,13 @@ export const metadata = {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string }>;
 }) {
   const {
     q: searchValue,
     rating: thresholdStars,
     itemsPerPage: maxItems,
-  } = searchParams as {
-    [key: string]: string;
-  };
+  } = await searchParams;
 
   return (
     <div className="px-4 flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0">
