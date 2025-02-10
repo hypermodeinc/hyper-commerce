@@ -1,12 +1,12 @@
 import { PhotoIcon } from "@heroicons/react/24/outline";
 
 const shimmer =
-  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent dark:before:via-white/20 before:via-stone-100 before:to-transparent";
+  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-linear-to-r before:from-transparent dark:before:via-white/20 before:via-stone-100 before:to-transparent";
 
 export function TileSkeleton() {
   return (
     <div
-      className={`${shimmer} relative overflow-hidden rounded-xl bg-black p-2 shadow-sm w-full h-full border border-stone-800 flex items-center justify-center`}
+      className={`${shimmer} relative overflow-hidden rounded-xl bg-black p-2 shadow-xs w-full h-full border border-stone-800 flex items-center justify-center`}
     >
       <div className="text-white/40 w-1/5 flex flex-col justify-center items-center">
         <PhotoIcon />
@@ -58,7 +58,7 @@ export function ProductSkeleton() {
     <div
       className={`${shimmer}  relative overflow-hidden rounded-lg bg-black border border-stone-700 p-6 w-full h-[90vh] flex`}
     >
-      <div className="w-3/5 h-full rounded bg-white/20 relative"></div>
+      <div className="w-3/5 h-full rounded-sm bg-white/20 relative"></div>
       <div className="w-2/5 pl-4 flex flex-col">
         <div className="bg-white/40 h-12 w-62 rounded-full mb-2"></div>
         <div className="rounded-full font-semibild bg-white/20 h-8 w-20 mr-auto text-lg"></div>
@@ -84,7 +84,7 @@ export function AdvancedSearchSkeleton() {
 
 export function SearchInputSkeleton() {
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <div className="relative flex flex-1 shrink-0">
       <div className="peer block w-full h-11 rounded-md border border-stone-700 py-[9px] pl-14 text-sm outline-2 placeholder:text-gray-500 bg-black" />
     </div>
   );

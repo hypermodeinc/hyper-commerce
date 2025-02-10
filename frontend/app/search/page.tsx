@@ -24,7 +24,7 @@ export default async function SearchPage({
 
   return (
     <div className="px-4 flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0">
-      <div className="w-full md:w-64 space-y-4 text-stone-400 bg-stone-900 p-2 rounded mb-auto">
+      <div className="w-full md:w-64 space-y-4 text-stone-400 bg-stone-900 p-2 rounded-sm mb-auto">
         <Suspense fallback={<AdvancedSearchSkeleton />}>
           <AdvancedSearch />
         </Suspense>
