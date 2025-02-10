@@ -10,7 +10,7 @@ export default function Footer() {
             <a
               href="https://github.com/hypermodeinc/hyper-commerce"
               target="_blank"
-              className="border border-white text-white py-2 px-4 rounded inline-flex items-center hover:opacity-80"
+              className="border border-white text-white py-2 px-4 rounded-sm inline-flex items-center hover:opacity-80"
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -24,7 +24,7 @@ export default function Footer() {
             <a
               href="https://youtu.be/Me4YjNzR-cg"
               target="_blank"
-              className="border hover:opacity-90 text-white text-sm py-2 px-4 rounded inline-flex items-center"
+              className="border hover:opacity-90 text-white text-sm py-2 px-4 rounded-sm inline-flex items-center"
             >
               <svg
                 className="w-4 h-4 mr-2"
