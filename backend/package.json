@@ -20,10 +20,10 @@
     "@types/eslint__js": "^8.42.3",
     "assemblyscript": "^0.27.30",
     "assemblyscript-prettier": "^3.0.1",
-    "eslint": "^9.17.0",
-    "prettier": "^3.4.2",
+    "eslint": "^9.20.0",
+    "prettier": "^3.5.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.19.0",
+    "typescript-eslint": "^8.23.0",
     "visitor-as": "^0.11.4"
   },
   "overrides": {
